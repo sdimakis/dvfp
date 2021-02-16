@@ -3,7 +3,7 @@
     "path": "C:/Users/sdima/Desktop/dvfp/index.rmd",
     "project_path": "index.rmd",
     "type": "r_markdown",
-    "hash": "1238660196",
+    "hash": "3495138714",
     "contents": "",
     "dirty": false,
     "created": 1613413878396.0,
@@ -11,15 +11,17 @@
     "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
-        "cursorPosition": "6,3",
-        "scrollLine": "0"
+        "cursorPosition": "24,2",
+        "scrollLine": "16",
+        "last_setup_crc32": "241CF22Ff154b5c1",
+        "chunk_output_type": "console"
     },
     "folds": "",
-    "lastKnownWriteTime": 1613413887,
+    "lastKnownWriteTime": 1613416505,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1613413887664,
+    "last_content_update": 1613416505482,
     "read_only": false,
     "read_only_alternatives": []
 }

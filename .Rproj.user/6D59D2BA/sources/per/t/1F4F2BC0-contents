@@ -1,19 +1,39 @@
 ---
-title: "dvfp"
+title: "Airplane etiquette"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+    social: menu
+    theme: united 
+    source_code: https://github.com/sdimakis/dvfp
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(rio)
+library(here)
+library(tidyverse)
+data <- import(here("data", "flying-etiquette.csv"))
+
 ```
+
+Sidebar Title {.sidebar}
+===================================
+**Data source**
+
+Participants
+=========================
+
+Data Visualization 1
+=========================
 
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Chart A
+### Final
 
 ```{r}
 
@@ -22,15 +42,159 @@ Column {data-width=650}
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### V1
+
+```{r}
+figure_1 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  filter(judgment != "") %>% 
+  group_by(judgment, type) %>% 
+  count()
+
+figure_1 %>% 
+  ggplot(aes(x= type, y = n, fill = judgment)) +
+  geom_bar(stat = "identity") + 
+  coord_flip() 
+
+
+n_per_group <- data %>%  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  filter(judgment != "") %>% 
+  count(type) %>% 
+  rename(n_group = n)
+
+figure_1 <- left_join(figure_1, n_per_group, by = "type") %>% 
+  mutate(percent = n/n_group)
+
+figure_1 %>% 
+  ggplot(aes(x= type, y = percent, fill = judgment)) +
+  geom_bar(stat = "identity") + 
+  coord_flip() 
+
+figure_1 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes") %>% 
+  count(type) 
+
+figure_1 %>% 
+  ggplot(aes(x = n, y = fct_reorder(type, n))) +
+  geom_col()
+```
+
+### V2
 
 ```{r}
 
 ```
 
-### Chart C
+Data Visualization 2
+=========================
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Final
 
 ```{r}
 
 ```
 
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### V1
+
+```{r}
+
+figure_2 <- figure_1 %>% filter(type %in% c("switch_family",
+                                "switch_friends",
+                                "wake_bathroom",
+                                "wake_walk")) %>% 
+  mutate(important = c("yes", "no", "yes", "no")) %>% 
+  mutate(type_binary = c("switch", "switch", "wake", "wake"))
+                    
+
+figure_2 %>% ggplot(aes(x = type_binary, y = n, fill = important)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  coord_flip()
+```
+
+### V2
+
+```{r}
+
+```
+
+Data Visualization 3
+=========================
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Final
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### V1
+
+```{r}
+
+height_inches = NULL
+height <- function(x){
+for(i in 1:length(x)){
+  temp <- str_split_fixed(x[i], "\"\"", n = 2)
+  temp2 <- str_split_fixed(temp[1], "'", n = 2)
+  temp3 <- as.numeric(temp2[1])*12 + as.numeric(temp2[2])
+  height_inches <- append(height_inches, temp3)
+  i <- i +1
+}
+  return(height_inches)
+}
+
+data <- data %>% mutate(height_inches = height(data$height))
+figure_3 <- data %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% filter(n_get_up != "" & rude_recline != "")
+figure_3 <- na.omit(figure_3)
+
+figure_3 %>% 
+  ggplot(aes(x = n_get_up, y = height_inches)) +
+  geom_boxplot()
+
+figure_3 %>% 
+  ggplot(aes(x = rude_recline, y = height_inches)) +
+  geom_boxplot()
+
+
+figure_2 %>% ggplot(aes(x = type_binary, y = n, fill = important)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  coord_flip()
+
+data %>% 
+  select(children, rude_baby) %>% 
+  count(rude_baby, children) %>% 
+  filter(rude_baby != "" & children != "") %>% 
+  ggplot(aes(x= children, y = n, fill = rude_baby)) +
+  geom_bar(stat = "identity")
+
+data %>% 
+  select(children, rude_child) %>% 
+  count(rude_child, children) %>% 
+  filter(rude_child != "" & children != "") %>% 
+  ggplot(aes(x= children, y = n, fill = rude_child)) +
+  geom_bar(stat = "identity")
+```
+
+### V2
+
+```{r}
+
+```
