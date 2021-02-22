@@ -523,14 +523,16 @@ figure_3 <- figure_3 %>% select(height_inches, n_get_up, rude_recline, children,
   filter(rude_recline != "")
 
 
-means <- figure_3 %>% 
-  group_by(rude_recline) %>% 
-  summarize(mean = mean(height_inches, na.rm = TRUE))
 
 figure_3 <- figure_3 %>% mutate(rude_recline = recode(rude_recline,
                                           `Yes, very rude` = "Very rude",
                                           `Yes, somewhat rude` = "Somewhat \nrude",
                                           `No, not rude at all` = "Not rude"))
+
+
+means <- figure_3 %>% 
+  group_by(rude_recline) %>% 
+  summarize(mean = mean(height_inches, na.rm = TRUE))
 
 figure_3 %>% 
   ggplot(aes(x = rude_recline, y = height_inches)) +
