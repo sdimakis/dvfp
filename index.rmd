@@ -3,7 +3,7 @@ title: "Airplane etiquette"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
-    vertical_layout: fill
+    vertical_layout: scroll
     social: menu
     theme: flatly 
     source_code: https://github.com/sdimakis/dvfp
@@ -19,8 +19,6 @@ library(tidyverse)
 data <- import(here("data", "flying-etiquette.csv"))
 
 ```
-
-
 
 Data Visualization 1 
 =========================
