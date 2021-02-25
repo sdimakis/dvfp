@@ -31,6 +31,7 @@ Sidebar Title {.sidebar}
 
 This data was collected online by [FiveThiryEight](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) in late August, 2014. The researchers asked people whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves. 
 
+
 **Visualization 1**
 
 This visualization plots the extent to which people consider airplane behaviors rude. The behaviors included are  moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
@@ -96,25 +97,25 @@ ggplot() +
   geom_text(data = figure_1_no, aes(x=perc/2, y = type, label = paste0(abs(round(perc*100)),"%")),
             size = 4) +
   geom_text(data = very_rude, aes(x = ifelse(perc > .05, 
-                                         somewhat_rude$perc + perc/2 , somewhat_rude$perc + perc),
+                                         somewhat_rude$perc + perc/2 , somewhat_rude$perc + perc), 
                                   y = type, label = paste0(round(perc*100), "%")),
             size = 4, hjust = ifelse(very_rude$perc > .05, .4, -.2)) +
   geom_text(data = somewhat_rude, aes(x=perc/2, y = type, label = paste0(round(perc*100), "%")),
             size = 4) +
-  colorblindr::scale_fill_OkabeIto(name = "")+
+  colorblindr::scale_fill_OkabeIto(name = "")+ #One potential area of improvement: I typically like these colors from OkabeIto, but for this plot, I feel the blue and the green are very similar. Perhaps you could lighten one or the other to make their divergence more clear in the final product? lighten()
   scale_x_continuous(breaks = pretty(figure_1$perc), 
                      limits = c(-.9, .9),
                      labels = NULL)+
   theme_minimal(base_size = 20) +
   labs(x = NULL,
        y = NULL,
-       title = "Airplane etiquette judgments",
+       title = "Airplane etiquette judgments", #For APA purposes, you might want to capitalize each letter in the title. Just a small thing.
        subtitle = "Is it rude to...") + 
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
         plot.title.position = "plot")
 
-
+ 
 ```
 
 Row {data-width=350}
@@ -162,7 +163,7 @@ figure_1 <- data %>%
          perc_no = no/total,
          perc_yes = yes/total) %>% 
   pivot_longer(cols = starts_with("perc"),
-               values_to = "perc",
+               values_to = "perc", #great job here, you really cleaned this up nicely!
                names_prefix = "perc_",
                names_to = "judgment") %>% 
   mutate(n = perc*total,
@@ -192,6 +193,7 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
   labs(x = NULL,
        y = NULL,
        title = "Airplane etiquette judgments")
+
 ```
 
 >After some research, I found that a divergent bargraph is pretty difficult to do with more than two categories, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called "rude." Next, I wanted to change the etiquette type labels so that they are not so long and add in a third category for "somewhat" rude judgments.
@@ -265,7 +267,7 @@ ggplot() +
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
         plot.title.position = "plot")
-
+# I can really tell the difference in cognitive load from directly applying the text to the bars rather than using a legend - great job!!
 ```
 
 > In order to have three judgment categories (including somewhat rude), I had to use two different `geom_bar` lines, one for the negative values and one for the positive values. I also added a subtitle "Is it rude to..." so that the reader knows how the questions were asked. For my final, I will label the bars directly to reduce cognitive load.
@@ -344,7 +346,9 @@ figure_2 %>% ggplot(aes(x = perc, y = fct_reorder(type_cat, perc)))+
   colorblindr::scale_color_OkabeIto(name = "Reason")
 
 
-  
+  #I am actually having a hard time following this graph because both legends are on the bottom. You might want to consider moving the "reason" legend to the side to more clearly differentiate what the percentages are referring to? But maybe that's just my tired eyes.
+
+#I am also confused as to how you are displaying essential vs. non essential. I understand when reading your code, but you might consider adding some sort of clarification that you have "subgroups" within each category of "bring your child", etc., so that viewers can see the plot and get all the information they need without being walked through it.
 ```
 
 Row {data-width=350}
@@ -464,7 +468,7 @@ figure_2 <- figure_2 %>%
          type_cat = c("bring", "bring", NA, "switch", "switch", NA, NA, "wake", "wake"))
 
 figure_2 %>% 
-  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) + #This factor reorder makes a big difference in cleaning things up. Nice!
   geom_col(fill = "gray60", alpha = .8)+
   geom_col(aes(fill = type_cat), alpha = .8) +
   labs(x = "Percent of individuals that say it's rude to do action",
@@ -517,6 +521,7 @@ for(i in 1:length(x)){
 }
   return(height_inches)
 }
+#wow, this is amazing how you created your own function so that you could get exactly what you needed for the plot!
 
 figure_3 <- data %>% mutate(height_inches = height(data$height))
 figure_3 <- figure_3 %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% 
@@ -554,7 +559,7 @@ figure_3 %>%
   theme(legend.position = "none",
         plot.title.position = "plot")+
   colorblindr::scale_color_OkabeIto()
-
+# So i'm actually wondering if you could flip the axes here and display the means of the judgments with uncertainty, then group by height? I think this could be very informative because right now, the data is not clear what the means and standard errors are for the judgments. But as is, this still is so beautiful and i love the way you clearly annotated with geom_label!
 ```
 
 Row 
@@ -575,6 +580,7 @@ for(i in 1:length(x)){
 }
   return(height_inches)
 }
+#I can't get over how creative this is! What a cool idea. 
 
 figure_3 <- data %>% mutate(height_inches = height(data$height))
 figure_3 <- figure_3 %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% 
@@ -585,7 +591,7 @@ figure_3 %>%
   geom_boxplot()+
   theme_minimal()+
   coord_flip()
-
+ #wow, this plot really came a long way! I can see how box plot was your initial thought for these data, but I think your final product was a much cleaner and more visually appealing way to communicate the finding.
 ```
 
 > In this first draft, I am plotting boxplots of judger height by judgment (very rude, somewhat rude, or not rude). This is a very basic boxplot and I will add color to distingh the boxes from each other, points so that you can see the data, and labels in the next plot. 
@@ -607,6 +613,7 @@ figure_3 %>%
   theme(legend.position = "none",
         plot.title.position = "plot")+
   colorblindr::scale_fill_OkabeIto()
+#I agree that the points on this plot version are extremely distracting and overwhelming for readers.
 ```
 
 > In this draft, I am using `geom_jitter()` so that you can see the points that would otherwise be stacked on top of each other. I think the points are distracting here because there are two many points to easily be able to tell distribution patterns. In the next draft I will use a sina plot to plot the distribution of points.
@@ -625,7 +632,7 @@ figure_3 %>%
   theme_minimal()+
   coord_flip()+
   ggforce::geom_sina(aes(color = rude_recline))+
-  labs(y = "Height of judger (in inches)",
+  labs(y = "Height of judger (in inches)", #This is great practice by including the metric of inches.
        x = NULL,
        title = "How reclining behavior is judged by height",
        subtitle = expression(paste("Is it rude to ", italic("recline"), 
