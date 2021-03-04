@@ -23,7 +23,7 @@ data <- import(here("data", "flying-etiquette.csv"))
 Data Visualization 1 
 =========================
 
-
+ 
 Sidebar Title {.sidebar}
 -----------------------------------------------------------------------
 
