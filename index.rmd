@@ -114,6 +114,8 @@ ggplot() +
          legend.direction = "horizontal",
         plot.title.position = "plot")
 
+## excellent work incorporating the percentages! That really helped the visual since the grid lines are hard to see. I do think the graph here could benefit from keeping the x axis; otherwise I was confused as to what the vertical dotted line means and the bars in relation to that.
+## the ordering of most unruly to least unruly is a nice touch, as is the "Is it rude to..." subtitle. Really clear narrative! -- AG
 
 ```
 
@@ -136,6 +138,8 @@ figure_1 %>%
   geom_bar(stat = "identity") + 
   coord_flip() +
   theme_minimal()
+
+## this is a great start! the grouping of judgment by color is helpful --AG
 ```
 
 >This is my first attempt to plot responses to airplane etiquette questions. The first things that I wanted to fix were color (to a color palette better for people who are colorblind) and the scale from n to percents so that you can easily tell how many people thought each action was rude/ not rude. Last, I want to try making a "divergent" bar graph, which centers positive and negative judgments at zero.
@@ -192,15 +196,17 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
   labs(x = NULL,
        y = NULL,
        title = "Airplane etiquette judgments")
+
+## I appreciate the simplicity of the scale on the x axis here, even the simplicity of examining rude vs. not rude. In the data, were there only three categories? I am curious how you chose to group somewhat and  very rude together. However, the narrative is much clearer with your modifications after this!
 ```
 
 >After some research, I found that a divergent bargraph is pretty difficult to do with more than two categories, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called "rude." Next, I wanted to change the etiquette type labels so that they are not so long and add in a third category for "somewhat" rude judgments.
 
-### V2
+### V3
 
 
 ```{r}
-
+## small typo, changed V2 --> V3
 figure_1 <- data %>% 
   select(starts_with("rude")) %>% 
   pivot_longer(cols = starts_with("rude"), 
@@ -343,7 +349,7 @@ figure_2 %>% ggplot(aes(x = perc, y = fct_reorder(type_cat, perc)))+
                      limits = c(0,1))+
   colorblindr::scale_color_OkabeIto(name = "Reason")
 
-
+## Cool concept here! I like that you are linking these ideas of essential action and rudeness. I am having some trouble interpreting the axes: for each category, for example, is the blue point the percent of individuals that say it's rude to do action given it is nonessential? Or are these individuals who believe the action is both non-essential and approximately 80% non-essential? Adding a clarifying subtitle detailing how to interpret would help here. --AG
   
 ```
 
@@ -481,6 +487,8 @@ figure_2 %>%
             label = paste0(round(figure_2$perc*100), "%"),
             hjust = -.2)
 
+## what do the colors mean here? --AG
+
 ```
 
 > I think this is good as it's going to get for a bar plot. For my final plot, I want it to be clear that I'm directly comparing essential to nonessential behaviors. To do this, I want them to be plotted on the same line. I'm going to use a dumbbell/ lollipop plot to do this.
@@ -555,6 +563,8 @@ figure_3 %>%
         plot.title.position = "plot")+
   colorblindr::scale_color_OkabeIto()
 
+## This is really cool! I like your purposeful use of error distribution here. Even with the uncertainty visualized as it is, I feel compelled to compare the means, though you state they are probably insignificant. Perhaps coloring the geom_label and geom_segment to a lighter color like gray could help?
+## I really like the way this visual progressed! Starting at the boxplot and ending at this final visual changed the narrative in a really interesting way. --AG
 ```
 
 Row 
