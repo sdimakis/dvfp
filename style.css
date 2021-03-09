@@ -6,3 +6,30 @@ body {
 h1{font-family: 'Crimson Text', serif;
 }
 h2{font-family: 'Crimson Text', serif;}
+
+.distill-site-nav {
+    color: rgb(0 0 0 / 80%);
+    background-color: #56B4E9;
+    font-size: 20px;
+    font-weight: 300;
+    padding: 10px;
+}
+
+.algolia-autocomplete {
+    display: none;
+}
+
+.d-title h1 {
+    display: none;
+}
+
+
+.distill-site-nav a {
+    color: black;
+    text-decoration: bold;
+}
+
+
+.distill-site-nav a:hover {
+  color: white;
+}

@@ -2002,6 +2002,33 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   }
   h2{font-family: 'Crimson Text', serif;}
   
+  .distill-site-nav {
+      color: rgb(0 0 0 / 80%);
+      background-color: #56B4E9;
+      font-size: 20px;
+      font-weight: 300;
+      padding: 10px;
+  }
+  
+  .algolia-autocomplete {
+      display: none;
+  }
+  
+  .d-title h1 {
+      display: none;
+  }
+  
+  
+  .distill-site-nav a {
+      color: black;
+      text-decoration: bold;
+  }
+  
+  
+  .distill-site-nav a:hover {
+    color: white;
+  }
+  
   </style>
   <!--/radix_placeholder_site_in_header-->
 
@@ -2022,8 +2049,13 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <header class="header header--fixed" role="banner">
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
+<span class="logo">
+<img src="airplane.png"/>
+</span>
 <a href="index.html" class="title">Airplane etiquette</a>
-<a href="index.html">Home</a>
+<a href="index.html">
+<i class="fa fa-home" aria-hidden="true"></i>
+</a>
 <a href="visualizations.html">Visualizations</a>
 <a href="about.html">About</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>

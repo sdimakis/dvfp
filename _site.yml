@@ -4,8 +4,9 @@ description: |
   My Blog
 output_dir: "docs"
 navbar:
-  left:
-    - text: "Home"
+  logo: airplane_logo.png
+  left:   
+    - icon: fa-home
       href: index.html
     - text: "Visualizations"
       href: visualizations.html
