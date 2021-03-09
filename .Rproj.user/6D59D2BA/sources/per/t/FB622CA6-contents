@@ -1,0 +1,164 @@
+---
+title: "Data vis final project proposal"
+author: "Sarah Dimakis"
+date: "1/26/2021"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 1
+    theme: cosmo
+    toc_float: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+library(here)
+library(rio)
+library(tidyverse)
+library(ggplot2)
+```
+
+# Data
+
+I am a graduate student in social psychology studying moral judgments. For my final project, I'm planning to use FiveThirtyEight's [data set](https://github.com/fivethirtyeight/data/tree/master/flying-etiquette-survey) about flying etiquette - judgments about how others should act on a plane (e.g., you should not wake up someone to go for a walk). They reported the data [here](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) with only one figure. I liked the figure, but I think it could be improved upon. Additionally, there are other unexplored variables in the data set that I would like to visualize for this project.
+
+```{r}
+data <- import(here("data", "flying-etiquette.csv"))
+
+```
+
+
+# Figure 1: Judgments of plane behaviors
+
+For the first figure, I want to recreate my version of actions that people find rude on a plane. For this figure, I will use the 9 judgments: moving to an unsold seat, talking to neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to go to the bathroom, bringing a baby, and bringing an unruly child. There are three choices for each (no, not rude at all, yes,somewhat rude, and yes, very rude), so I can make a stacked bar chart, or report all yes's together like 538 did when they reported it. This one is targeted toward a non-scientific audience.
+
+```{r}
+#very rough sketch
+figure_1 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  filter(judgment != "") %>% 
+  group_by(judgment, type) %>% 
+  count()
+
+figure_1 %>% 
+  ggplot(aes(x= type, y = n, fill = judgment)) +
+  geom_bar(stat = "identity") + 
+  coord_flip() +
+  theme_minimal()
+
+
+n_per_group <- data %>%  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  filter(judgment != "") %>% 
+  count(type) %>% 
+  rename(n_group = n)
+
+figure_1 <- left_join(figure_1, n_per_group, by = "type") %>% 
+  mutate(percent = n/n_group)
+
+figure_1 %>% 
+  ggplot(aes(x= type, y = percent, fill = judgment)) +
+  geom_bar(stat = "identity") + 
+  coord_flip() 
+
+figure_1 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), values_to = "judgment", names_prefix = "rude_", names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes") %>% 
+  count(type) 
+
+figure_1 %>% 
+  ggplot(aes(x = n, y = fct_reorder(type, n))) +
+  geom_col()
+
+```
+
+
+# Figure 2: Judgments of essential and nonessential behaviors
+
+There are four items (below) that I thought were particularly interesting because 1 & 2 are related, and 3 & 4 are related.
+1 and 4 are leisurely, fun but not necessary (go for a walk, spend time with your friends), whereas 2 and 3 may be perceived as more essential (going to the bathroom, sitting close to family - might assume your children), so I would expect the former items to be judged more harshly. I can look at this with bars (dodging the position here so it's not stacked). This one will likely be targeted towards a more scientific audience.
+
+1. Is it rude to ask someone to switch seats with you in order to be closer to friends?
+2. Is it rude to ask someone to switch seats with you in order to be closer to family?
+3. Is it rude to wake a passenger up if you are trying to go to the bathroom?
+4. Is it rude to wake a passenger up if you are trying to walk around?
+
+```{r}
+
+figure_2 <- figure_1 %>% filter(type %in% c("switch_family",
+                                "switch_friends",
+                                "wake_bathroom",
+                                "wake_walk")) %>% 
+  mutate(important = c("yes", "no", "yes", "no")) %>% 
+  mutate(type_binary = c("switch", "switch", "wake", "wake"))
+                    
+
+figure_2 %>% ggplot(aes(x = type_binary, y = n, fill = important)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  coord_flip()
+
+  
+```
+
+
+
+# Figure 3: Judgments of beneficial and non-beneficial behaviors 
+I am also interested to see if judgments change when the action would benefit or not benefit them. I can look at judgments about bringing children on the plane across people who have children and people who do not, and judgments about reclining your seat when people are tall vs. when they are not. I can make height into a continuous variable which will allow me to look at some boxplots but I'll have to use stacked bar plots again for the children. This one will also likely be targeted towards a more scientific audience (especially if I go with boxplots for my final plot).
+
+```{r, warning = FALSE}
+
+height_inches = NULL
+height <- function(x){
+for(i in 1:length(x)){
+  temp <- str_split_fixed(x[i], "\"\"", n = 2)
+  temp2 <- str_split_fixed(temp[1], "'", n = 2)
+  temp3 <- as.numeric(temp2[1])*12 + as.numeric(temp2[2])
+  height_inches <- append(height_inches, temp3)
+  i <- i +1
+}
+  return(height_inches)
+}
+
+data <- data %>% mutate(height_inches = height(data$height))
+figure_3 <- data %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% filter(n_get_up != "" & rude_recline != "")
+figure_3 <- na.omit(figure_3)
+
+figure_3 %>% 
+  ggplot(aes(x = n_get_up, y = height_inches)) +
+  geom_boxplot()
+
+figure_3 %>% 
+  ggplot(aes(x = rude_recline, y = height_inches)) +
+  geom_boxplot()
+
+
+figure_2 %>% ggplot(aes(x = type_binary, y = n, fill = important)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  coord_flip()
+
+data %>% 
+  select(children, rude_baby) %>% 
+  count(rude_baby, children) %>% 
+  filter(rude_baby != "" & children != "") %>% 
+  ggplot(aes(x= children, y = n, fill = rude_baby)) +
+  geom_bar(stat = "identity")
+
+data %>% 
+  select(children, rude_child) %>% 
+  count(rude_child, children) %>% 
+  filter(rude_child != "" & children != "") %>% 
+  ggplot(aes(x= children, y = n, fill = rude_child)) +
+  geom_bar(stat = "identity")
+
+
+```
+
+# Other ideas
+
+I can take one judgment and explore it further, e.g., maybe one that looks like it has a lot of disagreement, like reclining, which is about 50% yes 50% no. I have some basic geographical data so I could look at that to see if there are regional differences and could potentially create a map (though I'm not sure if it's even possible to do that with regional level data as I've only ever done it with county/state level). I also have other demographics like gender, education, income, etc., which I could at least use to summarize the data set, or see if there are differences in the judgment on these variables. There are some other interesting variables like travel frequency and self-reports of their own behaviors. I think I'll just need to make sure that I'm not just making a bunch of stacked bar charts since a lot of this data is categorical (or ordinal)

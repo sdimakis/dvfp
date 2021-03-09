@@ -1,0 +1,5 @@
+"0","data <- import(here(""data"", ""flying-etiquette.csv""))
+"
+"2","Error in import(here(""data"", ""flying-etiquette.csv"")) : 
+  could not find function ""import""
+"
