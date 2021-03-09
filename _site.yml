@@ -5,11 +5,12 @@ description: |
 output_dir: "docs"
 navbar:
   left:
-    - text: "Visualizations"
-      href: visualizations.html
-  right:
     - text: "Home"
       href: index.html
+    - text: "Visualizations"
+      href: visualizations.html
     - text: "About"
       href: about.html
-output: distill::distill_article
+output: 
+  distill::distill_article:
+    css: style.css
