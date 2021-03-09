@@ -1,0 +1,53 @@
+[
+  {
+    "path": "posts/2021-03-08-datavis1/",
+    "title": "Data visualization 1",
+    "description": "This visualization plots the extent to which people consider airplane behaviors rude. The behaviors included are  moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents.",
+    "author": [
+      {
+        "name": "Sarah Dimakis",
+        "url": "https://github.com/sdimakis"
+      }
+    ],
+    "date": "2021-03-08",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\nDraft 1\r\n\r\n\r\n\r\n\r\nThis is my first attempt to plot responses to airplane etiquette questions. The first things that I wanted to fix were color (to a color palette better for people who are colorblind) and the scale from n to percents so that you can easily tell how many people thought each action was rude/ not rude. Last, I want to try making a “divergent” bar graph, which centers positive and negative judgments at zero.\r\n\r\nDraft 2\r\n\r\n\r\n\r\n\r\nAfter some research, I found that a divergent bargraph is pretty difficult to do with more than two categories, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called “rude.” Next, I wanted to change the etiquette type labels so that they are not so long and add in a third category for “somewhat” rude judgments.\r\n\r\nDraft 3\r\n\r\n\r\n\r\n\r\nIn order to have three judgment categories (including somewhat rude), I had to use two different geom_bar lines, one for the negative values and one for the positive values. I also added a subtitle “Is it rude to…” so that the reader knows how the questions were asked. For my final, I will label the bars directly to reduce cognitive load.\r\n\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-08-datavis1/datavis1_files/figure-html5/unnamed-chunk-1-1.png",
+    "last_modified": "2021-03-08T16:05:16-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-08-datavis2/",
+    "title": "datavis_2",
+    "description": "For the second visualization I wanted to highlight that behaviors that you could consider \"essential\" like waking up your neighbor because you need to go to the bathroom are rated as less rude than \"non-essential\" behaviors of the same consequence, like waking up your neighbor to walk around.",
+    "author": [
+      {
+        "name": "Sarah Dimakis",
+        "url": "https://github.com/sdimakis"
+      }
+    ],
+    "date": "2021-03-08",
+    "categories": [],
+    "contents": "\r\nVisualization 2\r\nFinal\r\n\r\n\r\n\r\nDraft 1\r\n\r\n\r\n\r\n\r\nHere I am plotting airplane etiquette judgments, colored by how essential the action is. For example, waking someone up to walk around is less essential than waking up someone to go to the bathroom, so it should be judged as more rude. Instead of breaking it up by category like I’m doing here, I’m going to plot them all in order and show each category with a different color.\r\n\r\nDraft 2\r\n\r\n\r\n\r\n\r\nI like this plot a lot, but I want to put it in context of all the judgments (not just these six). I will first plot all of the judgments, then use color to highlight the ones shown here.\r\n\r\nDraft 3\r\n\r\n\r\n\r\n\r\nI think this is good as it’s going to get for a bar plot. For my final plot, I want it to be clear that I’m directly comparing essential to nonessential behaviors. To do this, I want them to be plotted on the same line. I’m going to use a dumbbell/ lollipop plot to do this.\r\n\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-08-datavis2/datavis2_files/figure-html5/unnamed-chunk-1-1.png",
+    "last_modified": "2021-03-08T12:24:33-08:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2021-03-08-datavis3/",
+    "title": "datavis_3",
+    "description": "I created this final visualization to demonstrate if judgments change when the action is personal. This visualization shows the distribution of respondent height for each answer to the question \"is it rude to recline your seat on an airplane?\" Since people who are tall may be made more uncomfortable by someone reclining their seat, they may feel more strongly that it is rude. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all.",
+    "author": [
+      {
+        "name": "Sarah Dimakis",
+        "url": "https://github.com/sdimakis"
+      }
+    ],
+    "date": "2021-03-08",
+    "categories": [],
+    "contents": "\r\nVisualization 3\r\nFinal\r\n\r\n\r\n\r\nDraft 1\r\n\r\n\r\n\r\n\r\nIn this first draft, I am plotting boxplots of judger height by judgment (very rude, somewhat rude, or not rude). This is a very basic boxplot and I will add color to distingh the boxes from each other, points so that you can see the data, and labels in the next plot.\r\n\r\nDraft 2\r\n\r\n\r\n\r\n\r\nIn this draft, I am using geom_jitter() so that you can see the points that would otherwise be stacked on top of each other. I think the points are distracting here because there are two many points to easily be able to tell distribution patterns. In the next draft I will use a sina plot to plot the distribution of points.\r\n\r\nDraft 3\r\n\r\n\r\n\r\n\r\nIn this draft, I am using a sina plot from the geom_force() package in order to see the distribution of the points. I got rid of the boxplot because I felt like it distracting. I do want to be able to easily decern the mean easily from the graph, so I will add a point for each mean and a label to my final draft.\r\n\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-03-08-datavis3/datavis3_files/figure-html5/unnamed-chunk-1-1.png",
+    "last_modified": "2021-03-08T12:23:42-08:00",
+    "input_file": {}
+  }
+]
