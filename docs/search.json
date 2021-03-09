@@ -6,21 +6,22 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T17:57:15-08:00"
+      "last_modified": "2021-03-08T18:59:30-08:00"
     },
     {
       "path": "index.html",
-      "title": "",
+      "title": "Welcome!",
+      "description": "This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar).",
       "author": [],
-      "contents": "\r\nData source\r\nThis data was collected online by FiveThiryEight in late August, 2014. The researchers asked people whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves.\r\nA quick summary of the participants\r\nIn each grid, there are 100 boxes. The darker shaded boxes represent the number of people in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T18:05:03-08:00"
+      "contents": "\r\nData source\r\nThe data for this project were collected online by FiveThiryEight in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves.\r\nParticipants\r\nIn each grid, there are 100 boxes. The darker shaded boxes represent the number of people in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-03-08T18:59:35-08:00"
     },
     {
       "path": "visualizations.html",
       "title": "Visualizations",
       "author": [],
-      "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T17:57:22-08:00"
+      "contents": "\r\n\r\n\r\n\r\na:hover{\r\n  background-color: white;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-03-08T19:01:44-08:00"
     }
   ],
   "collections": ["posts/posts.json"]

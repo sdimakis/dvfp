@@ -5,13 +5,13 @@ description: |
 output_dir: "docs"
 navbar:
   logo: airplane_logo.png
-  left:   
+  right:   
     - icon: fa-home
       href: index.html
-    - text: "Visualizations"
+    - icon: fa-chart-pie
       href: visualizations.html
-    - text: "About"
-      href: about.html
+    - icon: fa-github
+      href: https://github.com/sdimakis
 output: 
   distill::distill_article:
     css: style.css

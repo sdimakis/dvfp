@@ -7,29 +7,37 @@ h1{font-family: 'Crimson Text', serif;
 }
 h2{font-family: 'Crimson Text', serif;}
 
+
 .distill-site-nav {
     color: rgb(0 0 0 / 80%);
     background-color: #56B4E9;
     font-size: 20px;
     font-weight: 300;
-    padding: 10px;
+    padding: 15px;
 }
 
 .algolia-autocomplete {
     display: none;
 }
 
-.d-title h1 {
-    display: none;
-}
-
 
 .distill-site-nav a {
     color: black;
-    text-decoration: bold;
 }
 
+a:hover{
+  background-color: #aedbf4;
+}
 
 .distill-site-nav a:hover {
-  color: white;
+  color: #aedbf4;
+  background-color: #56B4E9;
+}
+
+.distill-site-header .logo img {
+    max-height: 35px;
+}
+
+.distill-site-header .title {
+    display: none;
 }

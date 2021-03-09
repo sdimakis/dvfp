@@ -2005,31 +2005,39 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   }
   h2{font-family: 'Crimson Text', serif;}
   
+  
   .distill-site-nav {
       color: rgb(0 0 0 / 80%);
       background-color: #56B4E9;
       font-size: 20px;
       font-weight: 300;
-      padding: 10px;
+      padding: 15px;
   }
   
   .algolia-autocomplete {
       display: none;
   }
   
-  .d-title h1 {
-      display: none;
-  }
-  
   
   .distill-site-nav a {
       color: black;
-      text-decoration: bold;
   }
   
+  a:hover{
+    background-color: #aedbf4;
+  }
   
   .distill-site-nav a:hover {
-    color: white;
+    color: #aedbf4;
+    background-color: #56B4E9;
+  }
+  
+  .distill-site-header .logo img {
+      max-height: 35px;
+  }
+  
+  .distill-site-header .title {
+      display: none;
   }
   
   </style>
@@ -2053,17 +2061,21 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <span class="logo">
-<img src="airplane.png"/>
+<img src="airplane_logo.png"/>
 </span>
 <a href="index.html" class="title">Airplane etiquette</a>
-<a href="index.html">
-<i class="fa fa-home" aria-hidden="true"></i>
-</a>
-<a href="visualizations.html">Visualizations</a>
-<a href="about.html">About</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
+<a href="index.html">
+<i class="fa fa-home" aria-hidden="true"></i>
+</a>
+<a href="visualizations.html">
+<i class="fa fa-chart-pie" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/sdimakis">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>

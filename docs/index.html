@@ -86,26 +86,29 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>Airplane etiquette: </title>
+  <title>Airplane etiquette: Welcome!</title>
   
+  <meta property="description" itemprop="description" content="This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."/>
   
   
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="Airplane etiquette: "/>
+  <meta property="og:title" content="Airplane etiquette: Welcome!"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Airplane etiquette"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="Airplane etiquette: "/>
+  <meta property="twitter:title" content="Airplane etiquette: Welcome!"/>
+  <meta property="twitter:description" content="This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","editor_options"]}},"value":[{"type":"character","attributes":{},"value":[""]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","site","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Welcome!"]},{"type":"character","attributes":{},"value":["This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2002,31 +2005,39 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
   }
   h2{font-family: 'Crimson Text', serif;}
   
+  
   .distill-site-nav {
       color: rgb(0 0 0 / 80%);
       background-color: #56B4E9;
       font-size: 20px;
       font-weight: 300;
-      padding: 10px;
+      padding: 15px;
   }
   
   .algolia-autocomplete {
       display: none;
   }
   
-  .d-title h1 {
-      display: none;
-  }
-  
   
   .distill-site-nav a {
       color: black;
-      text-decoration: bold;
   }
   
+  a:hover{
+    background-color: #aedbf4;
+  }
   
   .distill-site-nav a:hover {
-    color: white;
+    color: #aedbf4;
+    background-color: #56B4E9;
+  }
+  
+  .distill-site-header .logo img {
+      max-height: 35px;
+  }
+  
+  .distill-site-header .title {
+      display: none;
   }
   
   </style>
@@ -2041,7 +2052,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"","authors":[]}
+{"title":"Welcome!","description":"This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar).","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2053,14 +2064,18 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <img src="airplane_logo.png"/>
 </span>
 <a href="index.html" class="title">Airplane etiquette</a>
-<a href="index.html">
-<i class="fa fa-home" aria-hidden="true"></i>
-</a>
-<a href="visualizations.html">Visualizations</a>
-<a href="about.html">About</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
+<a href="index.html">
+<i class="fa fa-home" aria-hidden="true"></i>
+</a>
+<a href="visualizations.html">
+<i class="fa fa-chart-pie" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/sdimakis">
+<i class="fa fa-github" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2070,20 +2085,20 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>index.utf8</h1>
+<h1>Welcome!</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-
+<p>This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the <code>ggplot2</code> package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar).</p>
 </div>
 
 
 <div class="d-article">
 <h1 id="data-source">Data source</h1>
-<p>This data was collected online by <a href="https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/">FiveThiryEight</a> in late August, 2014. The researchers asked people whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves.</p>
-<h1 id="a-quick-summary-of-the-participants">A quick summary of the participants</h1>
+<p>The data for this project were collected online by <a href="https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/">FiveThiryEight</a> in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves.</p>
+<h1 id="participants">Participants</h1>
 <p>In each grid, there are 100 boxes. The darker shaded boxes represent the number of people in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.</p>
-<div class="layout-chunk" data-layout="l-page">
-<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="624" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" width="672" /></p>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
