@@ -1,0 +1,216 @@
+---
+title: "data vis 4"
+description: |
+  A short description of the post.
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(rio)
+library(here)
+library(tidyverse)
+data <- import(here("data", "flying-etiquette.csv"))
+
+data <- data %>% filter(travel_frequency != "Never")
+
+
+```
+
+### Final
+
+```{r, fig.width=14, fig.height=7}
+figure_2 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes") %>% 
+  filter(type %in% c("baby", "child",
+                     "switch_family", "switch_friends",
+                     "wake_bathroom", "wake_walk")) %>% 
+  mutate(essential = c("yes", "no", "yes", "no", "yes", "no"),
+         type_cat = c("bring", "bring", "switch", "switch", "wake", "wake")) 
+
+
+figure_2 <- figure_2 %>% 
+  mutate(type_cat = recode(type_cat, bring = "Bring your \nchild",
+                           wake = "Wake your\nneighbor",
+                           switch = "Ask to \nswitch seats"),
+         essential = recode(essential, no = "Non-essential",
+                            yes = "Essential")) 
+
+figure_2 %>% ggplot(aes(x = perc, y = fct_reorder(type_cat, perc)))+
+  geom_line(size = 3, color = "#646667") +
+  geom_point(aes(color = essential), size = 8) +
+  theme_minimal(base_size = 20) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Essential and non-essential airplane etiquette judgments",
+       subtitle = "Is it rude to...")+
+  theme(legend.direction = "horizontal",
+        plot.title.position = "plot",
+        legend.position = "bottom")+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_color_OkabeIto(name = "Reason")
+
+
+  
+```
+
+
+### Draft 1
+
+```{r}
+
+figure_2 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes") %>% 
+  filter(type %in% c("baby", "child",
+                     "switch_family", "switch_friends",
+                     "wake_bathroom", "wake_walk"))
+
+figure_2 <- figure_2 %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         essential = c("yes", "no", "yes", "no", "yes", "no"),
+         type_cat = c("bring", "bring", "switch", "switch", "wake", "wake"))
+
+
+figure_2 %>% ggplot(aes(x = type_cat, y = perc, fill = essential)) +
+  geom_bar(stat="identity", position=position_dodge()) +
+  coord_flip() +
+  theme_minimal()
+```
+
+> Here I am plotting airplane etiquette judgments, colored by how essential the action is. For example, waking someone up to walk around is less essential than waking up someone to go to the bathroom, so it should be judged as more rude. Instead of breaking it up by category like I'm doing here, I'm going to plot them all in order and show each category with a different color.
+
+### Draft 2
+
+```{r}
+
+
+figure_2 %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Airplane etiquette judgments for essential and nonessential behaviors",
+       subtitle = "How rude is to...")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent)+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")
+```
+
+> I like this plot a lot, but I want to put it in context of all the judgments (not just these six). I will first plot all of the judgments, then use color to highlight the ones shown here.  
+
+### Draft 3
+
+```{r}
+figure_2 <- data %>% 
+  select(starts_with("rude")) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_2 <- figure_2 %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c("bring", "bring", NA, "switch", "switch", NA, NA, "wake", "wake"))
+
+figure_2 %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Airplane etiquette judgments for essential and nonessential behaviors",
+       subtitle = "How rude is to...")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,.85))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_2$perc, y = figure_2$type, 
+            label = paste0(round(figure_2$perc*100), "%"),
+            hjust = -.2)
+
+```
+
+> I think this is good as it's going to get for a bar plot. For my final plot, I want it to be clear that I'm directly comparing essential to nonessential behaviors. To do this, I want them to be plotted on the same line. I'm going to use a dumbbell/ lollipop plot to do this.

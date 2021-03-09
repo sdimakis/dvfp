@@ -1,6 +1,6 @@
 ---
 title: "Welcome!"
-description: "This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). All plots were created in R, mainly with the `ggplot2` package. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."
+description: "This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). This website and the visualizations were created in R, using the `distill` package for blog websites and the `ggplot2` package for plotting. For all visualizations, people who responded that they had never travelled by plane before were excluded. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."
 
 site: distill::distill_website
 editor_options: 

@@ -1,13 +1,7 @@
 ---
-title: "Data visualization 1"
+title: "What's the rudest airplane behavior?"
 description: |
-  This visualization plots the extent to which people consider airplane behaviors rude. The behaviors included are  moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
-
-author:
-  - name: Sarah Dimakis
-    url: https://github.com/sdimakis
-    affiliation: University of Oregon
-date: 03-08-2021
+  This visualization plots the extent to which people consider airplane behaviors rude. The behaviors included are moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
 output:
   distill::distill_article:
     self_contained: false
@@ -16,7 +10,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-library(flexdashboard)
 library(rio)
 library(here)
 library(tidyverse)
@@ -26,9 +19,7 @@ data <- data %>% filter(travel_frequency != "Never")
 
 ```
 
-
-
-```{r, fig.width=14, fig.height=7}
+```{r}
 
 figure_1 <- data %>% 
   select(starts_with("rude")) %>% 
@@ -70,11 +61,16 @@ figure_1 <- figure_1 %>%
                              yes = "Very Rude",
                              somewhat = "Somewhat rude"))
 
+
 figure_1_no <- figure_1 %>% filter(judgment == "Not rude")
 figure_1_yes <- figure_1 %>% filter(judgment %in% c("Very Rude", "Somewhat rude"))
 
 very_rude <- figure_1_yes %>% filter(judgment  == "Very Rude")
 somewhat_rude <- figure_1_yes %>% filter(judgment  == "Somewhat rude")
+
+```
+
+```{r, layout = "l-body-outset", fig.height= 5, fig.width=8}
 
 ggplot() +
   geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
@@ -94,11 +90,10 @@ ggplot() +
   scale_x_continuous(breaks = pretty(figure_1$perc), 
                      limits = c(-.9, .9),
                      labels = NULL)+
-  theme_minimal(base_size = 20) +
+  theme_minimal(base_size = 12) +
   labs(x = NULL,
        y = NULL,
-       title = "Airplane etiquette judgments",
-       subtitle = "Is it rude to...") + 
+       title = "What people think is rude to do on a plane") + 
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
         plot.title.position = "plot")
@@ -107,8 +102,8 @@ ggplot() +
 ```
 
 
+# Draft 1 
 
-### Draft 1
 ```{r}
 
 figure_1 <- data %>% 
@@ -118,16 +113,22 @@ figure_1 <- data %>%
   group_by(judgment, type) %>% 
   count()
 
+```
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
 figure_1 %>% 
   ggplot(aes(x= type, y = n, fill = judgment)) +
   geom_bar(stat = "identity") + 
   coord_flip() +
+  colorblindr::scale_fill_OkabeIto(name = "Judgment") +
   theme_minimal()
 ```
 
->This is my first attempt to plot responses to airplane etiquette questions. The first things that I wanted to fix were color (to a color palette better for people who are colorblind) and the scale from n to percents so that you can easily tell how many people thought each action was rude/ not rude. Last, I want to try making a "divergent" bar graph, which centers positive and negative judgments at zero.
 
-### Draft 2
+
+This is my first attempt to plot responses to airplane etiquette questions. It holds all of the information that I need but it takes more time than necessary to figure out which judgment is the rudest. For the next draft, I wanted to order the judgments from rudest to least rude, fix the x-axis scale from n to percents because each condition has a different n due to missing data, and make a "divergent" bar graph, which centers positive and negative judgments at zero.
+
+# Draft 2
 
 ```{r}
 
@@ -169,6 +170,9 @@ figure_1 <- figure_1 %>%
            judgment  = recode(judgment, no = "Not rude",
                              yes = "Rude"))
 
+```
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
 figure_1 %>%
 ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
   geom_bar(stat="identity",position="identity", width = .8) +
@@ -181,9 +185,9 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
        title = "Airplane etiquette judgments")
 ```
 
->After some research, I found that a divergent bargraph is pretty difficult to do with more than two categories, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called "rude." Next, I wanted to change the etiquette type labels so that they are not so long and add in a third category for "somewhat" rude judgments.
+A divergent bar graph with more than two categories is difficult to do and I had never done one before, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called "rude." For the next figure, I made a divergent graph with three categorizes, used break lines to make the labels clearer, and used `geom_vline()` to separate rude from not rude judgments.
 
-### Draft 3
+# Draft 3
 
 
 ```{r}
@@ -234,6 +238,9 @@ figure_1_yes <- figure_1 %>% filter(judgment %in% c("Very Rude", "Somewhat rude"
 very_rude <- figure_1_yes %>% filter(judgment  == "Very Rude")
 somewhat_rude <- figure_1_yes %>% filter(judgment  == "Somewhat rude")
 
+```
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
 ggplot() +
   geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
            stat="identity",position="stack", width = .8, alpha = .8) +
@@ -247,12 +254,11 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL,
        y = NULL,
-       title = "Airplane etiquette judgments",
-       subtitle = "Is it rude to...") + 
+       title = "Airplane etiquette judgments") + 
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
         plot.title.position = "plot")
 
 ```
 
-> In order to have three judgment categories (including somewhat rude), I had to use two different `geom_bar` lines, one for the negative values and one for the positive values. I also added a subtitle "Is it rude to..." so that the reader knows how the questions were asked. For my final, I will label the bars directly to reduce cognitive load.
+In order to have three judgment categories (including somewhat rude), I had to use two different `geom_bar()` lines, one for the rude judgments and one for the not rude judgments. For my final version, I added numbers directly to the plot so that you don't have to look down at the axis to know how many people thought each judgment was rude. This was pretty tricky because some of the judgments had small bars so the labels needed to be plotted off of the graph.
