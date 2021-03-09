@@ -6,21 +6,21 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T16:41:05-08:00"
+      "last_modified": "2021-03-08T16:50:29-08:00"
     },
     {
       "path": "index.html",
       "title": "",
       "author": [],
       "contents": "\r\nData source\r\nThis data was collected online by FiveThiryEight in late August, 2014. The researchers asked people whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves.\r\nA quick summary of the participants\r\nIn each grid, there are 100 boxes. The darker shaded boxes represent the number of people in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T16:41:10-08:00"
+      "last_modified": "2021-03-08T16:50:33-08:00"
     },
     {
       "path": "visualizations.html",
       "title": "Visualizations",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-03-08T16:41:11-08:00"
+      "last_modified": "2021-03-08T16:50:34-08:00"
     }
   ],
   "collections": ["posts/posts.json"]
