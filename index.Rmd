@@ -1,6 +1,6 @@
 ---
 title: "Welcome!"
-description: "This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). This website and the visualizations were created in R, using the `distill` package for blog websites and the `ggplot2` package for plotting. For all visualizations, people who responded that they had never travelled by plane before were excluded. The purpose of this project is to describe which behaviors people judge as unacceptable on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."
+description: "This website was designed as a final project for a course in data visualization at the University of Oregon (EDLD652). This website and the visualizations were created in R, using the `distill` package for blog websites and the `ggplot2` package for plotting. The theme for the website was inspired by the OkabeIto color palette from the `colorblindr` package. The purpose of this project is to describe which behaviors people judge as rude on airplanes, and which factors (e.g., regional norms, personal qualities) may contribute to these judgments. To navigate to data visualizations, click on the chart icon (right side of the navigation bar)."
 
 site: distill::distill_website
 editor_options: 
@@ -9,7 +9,7 @@ editor_options:
 
 # Data source
 
-The data for this project were collected online by [FiveThiryEight](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves. 
+The data for this project were collected online by [FiveThiryEight](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves. For all visualizations, people who responded that they had never traveled by plane before were excluded.
 
 ```{r setup, include=FALSE}
 library(rio)
@@ -23,7 +23,7 @@ data <- data %>% filter(travel_frequency != "Never")
 
 # Participants
 
-In each grid, there are 100 boxes. The darker shaded boxes represent the number of people in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.
+In each grid, there are 100 boxes. The darker shaded boxes represent the number of people out of 100 in the sample who fall under the title category. For example, about 28% of people in the sample noted that they travel frequently, so 28 boxes are shaded darker. This allows you to quickly take in information about the attributes of the participants in the sample.
 
 ```{r, fig.height = 8, fig.width = 7}
 

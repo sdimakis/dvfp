@@ -1,14 +1,13 @@
 ---
-title: "datavis_3"
+title: "Does height affect which behaviors people find rude?"
 description: |
-  I created this final visualization to demonstrate if judgments change when the action is personal. This visualization shows the distribution of respondent height for each answer to the question "is it rude to recline your seat on an airplane?" Since people who are tall may be made more uncomfortable by someone reclining their seat, they may feel more strongly that it is rude. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all. 
-author:
-  - name: Sarah Dimakis
-    url: https://github.com/sdimakis
-date: 03-08-2021
+  I created this final visualization to see if people find an action more or less rude when it directly affects them. For example, very tall people may be made extremely uncomfortable when someone reclines their seat. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all. Some of the extreme categories have small sample sizes so be cautious drawing any conclusions. 
+  
 output:
   distill::distill_article:
     self_contained: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -19,58 +18,62 @@ library(flexdashboard)
 library(rio)
 library(here)
 library(tidyverse)
-data <- import(here("data", "flying-etiquette.csv"))
+
+# this has a few columns that I created with the height_script.R script
+data <- import(here("data", "flying-etiquette-heights.csv"))
+
 
 data <- data %>% filter(travel_frequency != "Never")
 
 ```
 
 
+# Draft 1
 
-**Visualization 3**
-
-### Final
-
-```{r, fig.width=14, fig.height=7}
-
-height_inches = NULL
-height <- function(x){
-for(i in 1:length(x)){
-  temp <- str_split_fixed(x[i], "\"\"", n = 2)
-  temp2 <- str_split_fixed(temp[1], "'", n = 2)
-  temp3 <- as.numeric(temp2[1])*12 + as.numeric(temp2[2])
-  height_inches <- append(height_inches, temp3)
-  i <- i +1
-}
-  return(height_inches)
-}
-
-figure_3 <- data %>% mutate(height_inches = height(data$height))
-figure_3 <- figure_3 %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% 
-  filter(rude_recline != "")
-
-
-
-figure_3 <- figure_3 %>% mutate(rude_recline = recode(rude_recline,
+```{r, layout = "l-body-outset", fig.height= 6, fig.width=10}
+figure_3 <- data %>% 
+  select(height_inches_numeric, n_get_up, rude_recline, children, rude_baby, rude_child) %>% 
+  mutate(rude_recline = recode(rude_recline,
                                           `Yes, very rude` = "Very rude",
                                           `Yes, somewhat rude` = "Somewhat \nrude",
                                           `No, not rude at all` = "Not rude"))
 
+figure_3 %>% 
+  filter(height_inches_numeric != "" & rude_recline != "") %>% 
+  ggplot(aes(x = rude_recline, y = height_inches_numeric)) +
+  geom_boxplot(aes(fill = rude_recline))+
+  theme_minimal(base_size = 16)+
+  coord_flip()+
+  geom_jitter()+
+  labs(y = "Height of judger (in inches)",
+       x = NULL,
+       title = "Is it rude to recline your seat on an airplane?")+
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  colorblindr::scale_fill_OkabeIto()
+```
 
+In this first draft, I am overlaying points onto boxplots with `geom_jitter()` so that you can see the points that would otherwise be stacked on top of each other. I think the points are distracting here because there are two many points to easily be able to tell distribution patterns. In the next draft I will use a sina plot to plot the distribution of points.
+
+
+# Draft 2 
+
+```{r, layout = "l-body-outset", fig.height= 6, fig.width=10}
 means <- figure_3 %>% 
   group_by(rude_recline) %>% 
-  summarize(mean = mean(height_inches, na.rm = TRUE))
+  summarize(mean = mean(height_inches_numeric, na.rm = TRUE)) %>% 
+  filter(rude_recline != "")
 
 figure_3 %>% 
-  ggplot(aes(x = rude_recline, y = height_inches)) +
-  theme_minimal(base_size = 20)+
+  filter(height_inches_numeric != "" & rude_recline != "") %>% 
+  ggplot(aes(x = rude_recline, y = height_inches_numeric)) +
+  theme_minimal(base_size = 16)+
   coord_flip()+
   ggforce::geom_sina(aes(color = rude_recline))+
   labs(y = "Height of judger (in inches)",
        x = NULL,
-       title = "How reclining behavior is judged by height",
-       subtitle = expression(paste("Is it rude to ", italic("recline"), 
-                                   " your seat on an airplane?")))+
+       title = expression(paste("Is it rude to ", italic("recline"), 
+                                   " your seat on an airplane?"))) +
   geom_segment(aes(x = .8, xend= 1.2, y=means[[1,2]], yend=means[[1,2]]), size =1 ) +
   geom_segment(aes(x = 1.8, xend= 2.2, y=means[[2,2]], yend=means[[2,2]]), size = 1) +
   geom_segment(aes(x = 2.8, xend= 3.2, y=means[[3,2]], yend=means[[3,2]]), size = 1) +
@@ -81,72 +84,189 @@ figure_3 %>%
   theme(legend.position = "none",
         plot.title.position = "plot")+
   colorblindr::scale_color_OkabeIto()
-
 ```
 
-### Draft 1
+In this draft, I am using a sina plot from the `geom_force()` package in order to see the distribution of the points. I got rid of the box plot because I felt like it distracting. I do want to be able to easily discern the mean easily from the graph, so I also added a point for each mean and a label. For my next draft, I wanted to be able to see all of the judgments (not just reclining behavior), so I used a bar chart and highlighted the judgments that I thought would be related to height.
 
-```{r}
+# Draft 3
 
-figure_3 <- data %>% mutate(height_inches = height(data$height))
-figure_3 <- figure_3 %>% select(height_inches, n_get_up, rude_recline, children, rude_baby, rude_child) %>% 
-  filter(rude_recline != "")
 
-figure_3 %>% 
-  ggplot(aes(x = rude_recline, y = height_inches)) +
-  geom_boxplot()+
-  theme_minimal()+
-  coord_flip()
+```{r, layout = "l-body-outset", fig.height= 9, fig.width=12,  preview=TRUE}
+figure_3b <- data %>% 
+  select(starts_with("rude"), height_cat) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, height_cat) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
 
-```
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(height_cat != "")
 
-> In this first draft, I am plotting boxplots of judger height by judgment (very rude, somewhat rude, or not rude). This is a very basic boxplot and I will add color to distingh the boxes from each other, points so that you can see the data, and labels in the next plot. 
+figure_3b$height_cat <- factor(figure_3b$height_cat, 
+                          levels = c("< 5'3", 
+                                     "5'3 to 5'6",
+                                     "5'7 to 5'10",
+                                     "5'11 to 6'2",
+                                     "> 6'2"))
 
-### Draft 2
 
-```{r}
-
-figure_3 %>% 
-  ggplot(aes(x = rude_recline, y = height_inches)) +
-  geom_boxplot(aes(fill = rude_recline))+
-  theme_minimal()+
-  coord_flip()+
-  geom_jitter()+
-  labs(y = "Height of judger (in inches)",
-       x = NULL,
-       title = "How reclining behavior is judged by height",
-       subtitle = "Is it rude to recline your seat on an airplane?")+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does height affect which behaviors people find rude?")+
+  theme_minimal(base_size = 15)+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
   theme(legend.position = "none",
         plot.title.position = "plot")+
-  colorblindr::scale_fill_OkabeIto()
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~height_cat)
+
 ```
 
-> In this draft, I am using `geom_jitter()` so that you can see the points that would otherwise be stacked on top of each other. I think the points are distracting here because there are two many points to easily be able to tell distribution patterns. In the next draft I will use a sina plot to plot the distribution of points.
 
-### Draft 3
+
+
+# Draft 4 
+```{r}
+# ranked_by_height <- figure_3b %>%  
+#   select(type, perc, height_cat, type_cat) %>%  
+#   group_by(height_cat) %>%  
+#   arrange(height_cat, -perc) %>%  
+#   mutate(rank = 1:n()) %>%  
+#   filter(rank <= 10)
+# 
+# plot <- ranked_by_height %>% 
+#   ggplot(aes(xmin =0,
+#              xmax = perc,
+#              ymin = rank - .45,
+#              ymax = rank + .45,
+#              y = rank)) +
+#   geom_rect(fill = "gray60", alpha = .8)+
+#   geom_rect(aes(fill = type_cat)) +
+#   colorblindr::scale_fill_OkabeIto()+ 
+#   facet_wrap(~height_cat) +
+#   scale_x_continuous(limits = c(-1, 1),  
+#     breaks = c(0, .25, .5, .75, 1)) +  
+#   geom_text(col = "gray13",
+#             hjust = "right",
+#             aes(label = type),
+#             x = 0) +
+#   scale_y_reverse() #+
+#   labs(x = "Percent of individuals that say it's rude to do action",
+#        y = NULL,
+#        title = "Airplane etiquette judgments for essential and nonessential behaviors",
+#        subtitle = "How rude is to...")+
+#   theme_minimal()+
+#   scale_x_continuous(labels = scales::percent,
+#                      limits = c(0,1))+
+#   theme(legend.position = "none",
+#         plot.title.position = "plot")+
+#   geom_text(x = figure_3b$perc, y = figure_3b$type, 
+#             label = paste0(round(figure_3b$perc*100), "%"),
+#             hjust = -.2)
+#   
+#   plot +  
+#   gganimate::transition_time(height_cat)
+```
+
 
 ```{r}
 
-figure_3 <- figure_3 %>% mutate(rude_recline = recode(rude_recline,
-                                          `Yes, very rude` = "Very rude",
-                                          `Yes, somewhat rude` = "Somewhat \nrude",
-                                          `No, not rude at all` = "Not rude"))
-
-figure_3 %>% 
-  ggplot(aes(x = rude_recline, y = height_inches)) +
-  theme_minimal()+
-  coord_flip()+
-  ggforce::geom_sina(aes(color = rude_recline))+
-  labs(y = "Height of judger (in inches)",
-       x = NULL,
-       title = "How reclining behavior is judged by height",
-       subtitle = expression(paste("Is it rude to ", italic("recline"), 
-                                   " your seat on an airplane?")))+
-  theme(legend.position = "none",
-        plot.title.position = "plot")+
-  colorblindr::scale_color_OkabeIto()
-
+# 
+# 
+# figure_3b <- data %>% 
+#   select(starts_with("rude"), height_inches) %>% 
+#   filter(height_inches != "") %>% 
+#   pivot_longer(cols = starts_with("rude"), 
+#                values_to = "judgment", 
+#                names_prefix = "rude_", 
+#                names_to = "type") %>%
+#   mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+#          "Yes, somewhat rude" = "yes",
+#          "Yes, very rude" = "yes")) %>% 
+#   filter(judgment != "") %>% 
+#   group_by(judgment, height_inches) %>% 
+#   count(type) %>% 
+#   pivot_wider(names_from = judgment,
+#               values_from = n) %>% 
+#   mutate(total = no + yes,
+#          perc_yes = yes/total,
+#          perc_no = no/total) %>% 
+#   pivot_longer(cols = "perc_yes",
+#                values_to = "percent",
+#                names_prefix = "perc_",
+#                names_to = "judgment") %>% 
+#   select(-c(no, yes)) %>% 
+#   filter(judgment == "yes")
+# 
+# figure_3b <- figure_3b %>% 
+#   mutate(type = recode(type, child = "Bring an unruly child",
+#                 wake_walk = "Wake neighbor \nto walk around",
+#                 recline = "Recline your seat",
+#                 wake_bathroom = "Wake neighbor \nto go to the bathroom",
+#                 baby = "Bring a baby",
+#                 switch_friends = "Ask to switch seats \nto be closer to friends",
+#                 talk = "Talk to your neighbor",
+#                 unsold = "Move to an unsold seat",
+#                 switch_family = "Ask to switch seats \nto be closer to family"),
+#          type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight"))
+# 
+# a <- figure_3b %>% 
+#   ggplot(aes(x = percent, y = fct_reorder(type, percent))) +
+#   geom_col(fill = "gray60", alpha = .8)+
+#   geom_col(aes(fill = type_cat), alpha = .8) +
+#   labs(x = "Percent of individuals that say it's rude to do action",
+#        y = NULL,
+#        title = "Airplane etiquette judgments for essential and nonessential behaviors",
+#        subtitle = "How rude is to...")+
+#   theme_minimal()+
+#   scale_x_continuous(labels = scales::percent,
+#                      limits = c(0,.85))+
+#   colorblindr::scale_fill_OkabeIto()+ 
+#   theme(legend.position = "none",
+#         plot.title.position = "plot")+
+#   geom_text(x = figure_3b$percent, y = figure_3b$type, 
+#             label = paste0(round(figure_3b$percent*100), "%"),
+#             hjust = -.2)+
+#   facet_wrap(~height_inches)
+# 
+# a + transition_time(height_inches)+
+#   labs(title = 'Height: {frame_time}')
 
 ```
 
-> In this draft, I am using a sina plot from the `geom_force()` package in order to see the distribution of the points. I got rid of the boxplot because I felt like it distracting. I do want to be able to easily decern the mean easily from the graph, so I will add a point for each mean and a label to my final draft.
+

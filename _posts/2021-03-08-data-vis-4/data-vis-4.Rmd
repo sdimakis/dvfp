@@ -2,6 +2,7 @@
 title: "data vis 4"
 description: |
   A short description of the post.
+draft: true
 output:
   distill::distill_article:
     self_contained: false
@@ -214,3 +215,331 @@ figure_2 %>%
 ```
 
 > I think this is good as it's going to get for a bar plot. For my final plot, I want it to be clear that I'm directly comparing essential to nonessential behaviors. To do this, I want them to be plotted on the same line. I'm going to use a dumbbell/ lollipop plot to do this.
+
+
+#income
+
+```{r}
+
+
+figure_3b <- data %>% 
+  select(starts_with("rude"), income) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, income) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(income != "")
+
+figure_3b$income <- factor(figure_3b$income, 
+                          levels = c("$0 - $24,999", 
+                                     "$25,000 - $49,999",
+                                     "$50,000 - $99,999",
+                                     "$100,000 - $149,999",
+                                     "150000"))
+
+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does income affect airplane judgments?")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~income)
+```
+
+#education
+
+```{r}
+figure_3b <- data %>% 
+  select(starts_with("rude"), education) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, education) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(education != "")
+
+figure_3b$education <- factor(figure_3b$education, 
+                          levels = c("Less than high school degree", 
+                                     "High school degree",
+                                     "Some college or Associate degree",
+                                     "Bachelor degree",
+                                     "Graduate degree"))
+
+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does education affect airplane judgments?")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~education)
+```
+
+
+#gender
+
+
+```{r}
+figure_3b <- data %>% 
+  select(starts_with("rude"), gender) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, gender) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(gender != "")
+
+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does gender affect airplane judgments?")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~gender)
+```
+
+#have children
+
+```{r}
+
+figure_3b <- data %>% 
+  select(starts_with("rude"), children) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, children) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(children != "")
+
+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does having a young child affect airplane judgments?")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~children)
+```
+
+travel frequently
+
+
+```{r}
+
+figure_3b <- data %>% mutate(travel_frequency = 
+                  ifelse(travel_frequency == "Once a year or less", 
+                         "Infrequent", "Frequent")) %>% 
+  select(starts_with("rude"), travel_frequency) %>% 
+  pivot_longer(cols = starts_with("rude"), 
+               values_to = "judgment", 
+               names_prefix = "rude_", 
+               names_to = "type") %>%
+  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
+         "Yes, somewhat rude" = "yes",
+         "Yes, very rude" = "yes")) %>% 
+  filter(judgment == "yes" | judgment == "no") %>% 
+  group_by(judgment, travel_frequency) %>% 
+  count(type) %>% 
+  pivot_wider(names_from = judgment,
+              values_from = n) %>% 
+  mutate(total = no + yes,
+         perc_no = no/total,
+         perc_yes = yes/total) %>% 
+  pivot_longer(cols = starts_with("perc"),
+               values_to = "perc",
+               names_prefix = "perc_",
+               names_to = "judgment") %>% 
+  select(-c(no, yes)) %>% 
+  filter(judgment == "yes")
+
+figure_3b <- figure_3b %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
+                wake_walk = "Wake neighbor \nto walk around",
+                recline = "Recline your seat",
+                wake_bathroom = "Wake neighbor \nto go to the bathroom",
+                baby = "Bring a baby",
+                switch_friends = "Ask to switch seats \nto be closer to friends",
+                talk = "Talk to your neighbor",
+                unsold = "Move to an unsold seat",
+                switch_family = "Ask to switch seats \nto be closer to family"),
+         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+  filter(travel_frequency != "")
+
+
+figure_3b %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(aes(fill = type_cat), alpha = .8) +
+  labs(x = "Percent of individuals that say it's rude to do action",
+       y = NULL,
+       title = "Does being a frequent flyer affect airplane judgments?")+
+  theme_minimal()+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  colorblindr::scale_fill_OkabeIto()+ 
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  facet_wrap(~travel_frequency)
+
+
+
+
+```

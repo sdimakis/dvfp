@@ -38,6 +38,13 @@ a:hover{
     max-height: 35px;
 }
 
+.distill-site-header a, .distill-site-header .title {
+    display: inline;
+}
+
+
+
 .distill-site-header .title {
     display: none;
 }
+
