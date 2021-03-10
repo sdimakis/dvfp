@@ -19,88 +19,6 @@ data <- data %>% filter(travel_frequency != "Never")
 
 ```
 
-```{r}
-
-figure_1 <- data %>% 
-  select(starts_with("rude")) %>% 
-  pivot_longer(cols = starts_with("rude"), 
-               values_to = "judgment", 
-               names_prefix = "rude_", 
-               names_to = "type") %>%
-  mutate(judgment = recode(judgment, "No, not rude at all" = "no",
-         "Yes, somewhat rude" = "somewhat",
-         "Yes, very rude" = "yes")) %>% 
-  filter(judgment == "yes" | judgment == "no" | judgment == "somewhat") %>% 
-  group_by(judgment) %>% 
-  count(type) %>% 
-  pivot_wider(names_from = judgment,
-              values_from = n) %>% 
-  mutate(total = no + yes + somewhat,
-         perc_no = no/total,
-         perc_yes = yes/total,
-         perc_somewhat = somewhat/ total) %>% 
-  pivot_longer(cols = starts_with("perc"),
-               values_to = "perc",
-               names_prefix = "perc_",
-               names_to = "judgment") %>% 
-  mutate(n = perc*total,
-         perc = ifelse(judgment == "no", perc*-1, perc)) %>% 
-  select(-c(no, yes, somewhat))
-
-figure_1 <- figure_1 %>% 
-  mutate(type = recode(type, child = "Bring an unruly child",
-                wake_walk = "Wake neighbor \nto walk around",
-                recline = "Recline your seat",
-                wake_bathroom = "Wake neighbor \nto go to the bathroom",
-                baby = "Bring a baby",
-                switch_friends = "Ask to switch seats \nto be closer to friends",
-                talk = "Talk to your neighbor",
-                unsold = "Move to an unsold seat",
-                switch_family = "Ask to switch seats \nto be closer to family"),
-           judgment  = recode(judgment, no = "Not rude",
-                             yes = "Very Rude",
-                             somewhat = "Somewhat rude"))
-
-
-figure_1_no <- figure_1 %>% filter(judgment == "Not rude")
-figure_1_yes <- figure_1 %>% filter(judgment %in% c("Very Rude", "Somewhat rude"))
-
-very_rude <- figure_1_yes %>% filter(judgment  == "Very Rude")
-somewhat_rude <- figure_1_yes %>% filter(judgment  == "Somewhat rude")
-
-```
-
-```{r, layout = "l-body-outset", fig.height= 5, fig.width=8}
-
-ggplot() +
-  geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
-           stat="identity",position="stack", width = .8, alpha = .8) +
-  geom_bar(data = figure_1_yes, aes(x = perc, y = fct_reorder(type,perc), fill = forcats::fct_rev(judgment)), 
-           stat = "identity", position = "stack", width = .8, alpha = .8) +
-  geom_vline(xintercept = 0, color = "black", linetype = "dashed")+
-  geom_text(data = figure_1_no, aes(x=perc/2, y = type, label = paste0(abs(round(perc*100)),"%")),
-            size = 4) +
-  geom_text(data = very_rude, aes(x = ifelse(perc > .05, 
-                                         somewhat_rude$perc + perc/2 , somewhat_rude$perc + perc),
-                                  y = type, label = paste0(round(perc*100), "%")),
-            size = 4, hjust = ifelse(very_rude$perc > .05, .4, -.2)) +
-  geom_text(data = somewhat_rude, aes(x=perc/2, y = type, label = paste0(round(perc*100), "%")),
-            size = 4) +
-  colorblindr::scale_fill_OkabeIto(name = "")+
-  scale_x_continuous(breaks = pretty(figure_1$perc), 
-                     limits = c(-.9, .9),
-                     labels = NULL)+
-  theme_minimal(base_size = 12) +
-  labs(x = NULL,
-       y = NULL,
-       title = "What people think is rude to do on a plane") + 
-  theme(legend.position = "bottom", 
-         legend.direction = "horizontal",
-        plot.title.position = "plot")
-
-
-```
-
 
 # Draft 1 
 
@@ -155,9 +73,7 @@ figure_1 <- data %>%
                names_to = "judgment") %>% 
   mutate(n = perc*total,
          perc = ifelse(judgment == "no", perc*-1, perc)) %>% 
-  select(-c(no, yes))
-
-figure_1 <- figure_1 %>% 
+  select(-c(no, yes)) %>% 
   mutate(type = recode(type, child = "Bring an unruly child",
                 wake_walk = "Wake neighbor to walk around",
                 recline = "Recline your seat",
@@ -181,8 +97,7 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
                      labels = paste0(abs(pretty(figure_1$perc))*100, "%"))+
   theme_minimal() +
   labs(x = NULL,
-       y = NULL,
-       title = "Airplane etiquette judgments")
+       y = NULL)
 ```
 
 A divergent bar graph with more than two categories is difficult to do and I had never done one before, so I started with this graph, collapsing down somewhat rude and very rude judgments in a category called "rude." For the next figure, I made a divergent graph with three categorizes, used break lines to make the labels clearer, and used `geom_vline()` to separate rude from not rude judgments.
@@ -241,6 +156,7 @@ somewhat_rude <- figure_1_yes %>% filter(judgment  == "Somewhat rude")
 ```
 
 ```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
+
 ggplot() +
   geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
            stat="identity",position="stack", width = .8, alpha = .8) +
@@ -254,11 +170,44 @@ ggplot() +
   theme_minimal() +
   labs(x = NULL,
        y = NULL,
-       title = "Airplane etiquette judgments") + 
+       title = "What's the rudest airplane behavior?") + 
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
         plot.title.position = "plot")
 
+
 ```
 
 In order to have three judgment categories (including somewhat rude), I had to use two different `geom_bar()` lines, one for the rude judgments and one for the not rude judgments. For my final version, I added numbers directly to the plot so that you don't have to look down at the axis to know how many people thought each judgment was rude. This was pretty tricky because some of the judgments had small bars so the labels needed to be plotted off of the graph.
+
+# Final draft
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8, preview=TRUE}
+
+ggplot() +
+  geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
+           stat="identity",position="stack", width = .8, alpha = .8) +
+  geom_bar(data = figure_1_yes, aes(x = perc, y = fct_reorder(type,perc), fill = forcats::fct_rev(judgment)), 
+           stat = "identity", position = "stack", width = .8, alpha = .8) +
+  geom_vline(xintercept = 0, color = "black", linetype = "dashed")+
+  geom_text(data = figure_1_no, aes(x=perc/2, y = type, label = paste0(abs(round(perc*100)),"%")),
+            size = 4) +
+  geom_text(data = very_rude, aes(x = ifelse(perc > .05, 
+                                         somewhat_rude$perc + perc/2 , somewhat_rude$perc + perc),
+                                  y = type, label = paste0(round(perc*100), "%")),
+            size = 4, hjust = ifelse(very_rude$perc > .05, .4, -.2)) +
+  geom_text(data = somewhat_rude, aes(x=perc/2, y = type, label = paste0(round(perc*100), "%")),
+            size = 4) +
+  colorblindr::scale_fill_OkabeIto(name = "")+
+  scale_x_continuous(limits = c(-1, 1),
+                     labels = NULL)+
+  theme_minimal(base_size = 12) +
+  labs(x = NULL,
+       y = NULL,
+       title = "What's the rudest airplane behavior?") + 
+  theme(legend.position = "bottom", 
+         legend.direction = "horizontal",
+        plot.title.position = "plot")
+
+
+```

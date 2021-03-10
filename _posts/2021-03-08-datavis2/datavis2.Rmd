@@ -48,53 +48,8 @@ figure_2a <- data %>%
   mutate(n = perc*total,
          perc = ifelse(judgment == "no", perc*-1, perc)) %>% 
   select(-c(no, yes)) %>% 
-  filter(location != "")
-```
-
-```{r}
-library(albersusa)
-
-us <- usa_sf()
-
-us <- us %>%
-  mutate(location = case_when(name %in% 
-                                c("Illinois", "Indiana",
-                                  "Michigan", "Ohio",
-                                  "Wisconsin") ~ "East North Central",
-                              name %in% c("Alabama", "Kentucky",
-                                          "Mississippi",
-                                          "Tennessee") 
-                              ~ "East South Central",
-                              name %in% c("New Jersey", "New York",
-                               "Pennsylvania") ~
-                                "Middle Atlantic",
-                              name %in% c("Connecticut", "Maine",
-                                          "Massachusetts", "New Hampshire", "Rhode Island", "Vermont") ~
-                                "New England",
-                              name %in% c("Iowa", "Kansas",
-                                           "Minnesota", "Missouri",
-                                           "Nebraska", "North Dakota", "South Dakota") ~ "West North Central",
-                              name %in% c("Delaware", "Florida",
-                                           "Georgia", "Maryland",
-                                           "North Carolina","South Carolina", "Virginia",
-                                           "District of Columbia",
-                                           "West Virginia") ~
-                                "South Atlantic",
-                              name %in% c("Arkansas", "Louisiana",
-                                          "Oklahoma", "Texas") ~
-                                "West South Central",
-                              name %in% c("Arizona", "Colorado",
-                                          "Idaho", "Montana",
-                                          "Nevada", "New Mexico",
-                                          "Utah","Wyoming") ~ 
-                                "Mountain",
-                              name %in% c("Alaska", "California",
-                                          "Hawaii", "Oregon", 
-                                          "Washington") ~
-                                "Pacific"))
-
-figure_2a <- figure_2a %>% 
-    mutate(type = recode(type, child = "Bring an unruly child",
+  filter(location != "") %>% 
+  mutate(type = recode(type, child = "Bring an unruly child",
                 wake_walk = "Wake neighbor \nto walk around",
                 recline = "Recline your seat",
                 wake_bathroom = "Wake neighbor to go \nto the bathroom",
@@ -104,30 +59,7 @@ figure_2a <- figure_2a %>%
                 unsold = "Move to an unsold seat",
                 switch_family = "Ask to switch seats \nto be closer to family"))
 
-new_us <- left_join(us, figure_2a)
 ```
-
-
-```{r, layout = "l-body-outset", fig.height= 6, fig.width=10}
-
-a <- new_us %>% 
-  mutate(perc = round(perc, 2)) %>% 
-  ggplot() +
-  geom_sf(aes(fill = perc), color = "black") +
-  facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
-  theme_void()+
-  labs(title = "Rudeness of plane behaviors",
-       fill = "Percent who \nthinks act \nis rude") +
-  scale_fill_viridis_c(limits = c(0, 1),
-                       labels = scales::percent,
-                       direction = -1)
-
-library(plotly)
-
-ggplotly(a, tooltip = c("location", "perc"))
-
-```
-
 
 
 # Draft 1
@@ -137,12 +69,13 @@ ggplotly(a, tooltip = c("location", "perc"))
 figure_2a %>%
   filter(judgment == "yes") %>%
 ggplot(aes(x = perc, y = fct_reorder(type, perc), color = location)) +
-  geom_point(stat="identity",position="identity", size = 2) +
+  geom_point(size = 2) +
   theme_minimal() +
   colorblindr::scale_color_OkabeIto(name = "location") +
-  labs(x = "% who rate the behavior as rude",
+  labs(x = "Percent judging the action as rude",
        y = NULL,
-       title = "Airplane etiquette judgments by location")
+       title = "Rudest airplane behaviors by US division")
+
 
 ```
 
@@ -205,44 +138,131 @@ figure_2b <- figure_2b %>%
 
 ```
 
-```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 6.5, fig.width=10}
+
+library(emojifont)
+
 figure_2b %>%
+  mutate(plane_label = fontawesome('fa-plane')) %>% 
   filter(judgment == "yes") %>% 
-ggplot(aes(x = perc, y = fct_reorder(type, perc), color = region)) +
-  geom_point(stat="identity",position="identity", size = 2) +
-  geom_vline(xintercept = 0.5, color = "black", linetype = "dashed")+
-  theme_minimal() +
+ggplot(aes(x = perc, y = fct_reorder(type, perc), color = region, label = plane_label)) +
+  geom_text(family='fontawesome-webfont', size=10, key_glyph = draw_key_point)+
+  geom_vline(xintercept = 0.5, color = "gray40", linetype = "dashed")+
+  theme_minimal(base_size = 30) +
   colorblindr::scale_color_OkabeIto() +
   labs(y = NULL,
-       x = "Percentage of people who think it's rude",
-       color = "US region",
-       title = "Rudeness judgments by US region")+
+       x = "Percent judging the action as rude",
+       color = "US Region",
+       title = "Rudest airplane behaviors by US region")+
   scale_x_continuous(labels = scales::percent,
                      limits = c(0, 1)) 
 
 ```
 
-Even though this looks cleaner, we are missing potentially valuable information about subdivisions by collapsing across regions. Additionally, it's possible that we will be able to learn interesting information about how divisions that are close to each other (but maybe not in the same region) may be related to each other in judgments. For these reasons, I used `facet_wrap()` to plot judgments onto US maps.
+I made the points into airplanes with the `emojifont` package. Even though this looks cleaner, we are missing potentially valuable information about subdivisions by collapsing across regions. Additionally, it's possible that we will be able to learn interesting information about how divisions that are close to each other (but maybe not in the same region) may be related to each other in judgments. For these reasons, I used `facet_wrap()` to plot judgments onto US maps.
 
 # Draft 3
 
+
+```{r}
+library(albersusa)
+
+us <- usa_sf()
+
+us <- us %>%
+  mutate(location = case_when(name %in% 
+                                c("Illinois", "Indiana",
+                                  "Michigan", "Ohio",
+                                  "Wisconsin") ~ "East North Central",
+                              name %in% c("Alabama", "Kentucky",
+                                          "Mississippi",
+                                          "Tennessee") 
+                              ~ "East South Central",
+                              name %in% c("New Jersey", "New York",
+                               "Pennsylvania") ~
+                                "Middle Atlantic",
+                              name %in% c("Connecticut", "Maine",
+                                          "Massachusetts", "New Hampshire", "Rhode Island", "Vermont") ~
+                                "New England",
+                              name %in% c("Iowa", "Kansas",
+                                           "Minnesota", "Missouri",
+                                           "Nebraska", "North Dakota", "South Dakota") ~ "West North Central",
+                              name %in% c("Delaware", "Florida",
+                                           "Georgia", "Maryland",
+                                           "North Carolina","South Carolina", "Virginia",
+                                           "District of Columbia",
+                                           "West Virginia") ~
+                                "South Atlantic",
+                              name %in% c("Arkansas", "Louisiana",
+                                          "Oklahoma", "Texas") ~
+                                "West South Central",
+                              name %in% c("Arizona", "Colorado",
+                                          "Idaho", "Montana",
+                                          "Nevada", "New Mexico",
+                                          "Utah","Wyoming") ~ 
+                                "Mountain",
+                              name %in% c("Alaska", "California",
+                                          "Hawaii", "Oregon", 
+                                          "Washington") ~
+                                "Pacific"))
+
+new_us <- left_join(us, figure_2a)
+```
+
+
+
 ```{r,  echo = TRUE, layout = "l-body-outset", fig.height= 9, fig.width=10, preview=TRUE}
+
+
 ggplot(new_us) +
   geom_sf(aes(fill = perc), color = "black") +
   facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
   theme_void(base_size = 15)+
-  labs(title = "What people think is rude to do on a plane (by divison)",
+  labs(title = "Rudest airplane behaviors by US division",
        fill = "Percent who \nthinks act \nis rude") +
-  scale_fill_viridis_c(limits = c(0, 1),
-                       labels = scales::percent,
-                       direction = -1,
-                       breaks = c(0, .5, 1)) + 
+  scale_fill_gradient2(low = "#E69F00",
+                       mid = "white",
+                      high = "#56B4E9",
+                      midpoint = .5,
+                      limits = c(0, 1),
+                      breaks = c(0, .5, 1),
+                      labels = scales::percent) + 
   theme(legend.position = c(.75, -.05), 
         legend.direction = "horizontal",
         plot.margin = margin(b = 1, unit = "cm"))
 
+```
+
+I considered different options for the colors and ended up on this one. The `viridis` continuous color palette would have made it easier to distinguish between midpoint high and midpoint low, but it didn't match the colors for the rest of my plots and a blend of different colors from the `OkabeIto` color palette made an ugly gray color. Ultimately, I settled on this one, which does a good job at showing the main takeaway, that generally different regions agree on judgments. Next, I wanted to try to make it interactive. For my final plot, I used `ggplotly()` to convert my ggplot graph into an interactive `plotly` graph. When you hover over the states, you should see the percentage of people in the district who judged the act as rude. You should also be able to zoom in on a specific area. 
+
+# Final draft
+
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 6, fig.width=10}
+
+a <- new_us %>% 
+  mutate(perc = round(perc, 2)) %>% 
+  ggplot() +
+  geom_sf(aes(fill = perc), color = "black") +
+  facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
+  theme_void()+
+  labs(title = "Rudest airplane behaviors by US division",
+       fill = "Percent who \nthinks act \nis rude") +
+  scale_fill_gradient2(low = "#E69F00",
+                       mid = "white",
+                      high = "#56B4E9",
+                      midpoint = .5,
+                      limits = c(0, 1),
+                      breaks = c(0, .5, 1),
+                      labels = scales::percent)
+
+library(plotly)
+
+ggplotly(a, tooltip = c("location", "perc"))
 
 ```
 
-I think this is a strong graph, but I wanted to try to make it interactive. For my final plot, I used `ggplotly()` to to convert my ggplot graph into an interactive `plotly` graph. When you hover over the states, you should see the percentage of people in the district who judged the act as rude. You should also be able to zoom in on a specific area. 
+
+
 

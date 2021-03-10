@@ -1,5 +1,5 @@
 ---
-title: "Does height affect which behaviors people find rude?"
+title: "Do tall people think reclining your seat is rude?"
 description: |
   I created this final visualization to see if people find an action more or less rude when it directly affects them. For example, very tall people may be made extremely uncomfortable when someone reclines their seat. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all. Some of the extreme categories have small sample sizes so be cautious drawing any conclusions. 
   
@@ -72,8 +72,8 @@ figure_3 %>%
   ggforce::geom_sina(aes(color = rude_recline))+
   labs(y = "Height of judger (in inches)",
        x = NULL,
-       title = expression(paste("Is it rude to ", italic("recline"), 
-                                   " your seat on an airplane?"))) +
+       title = expression(paste("Is it rude to ", bold("recline your seat"), 
+                                   " on an airplane?"))) +
   geom_segment(aes(x = .8, xend= 1.2, y=means[[1,2]], yend=means[[1,2]]), size =1 ) +
   geom_segment(aes(x = 1.8, xend= 2.2, y=means[[2,2]], yend=means[[2,2]]), size = 1) +
   geom_segment(aes(x = 2.8, xend= 3.2, y=means[[3,2]], yend=means[[3,2]]), size = 1) +
@@ -91,7 +91,7 @@ In this draft, I am using a sina plot from the `geom_force()` package in order t
 # Draft 3
 
 
-```{r, layout = "l-body-outset", fig.height= 9, fig.width=12,  preview=TRUE}
+```{r}
 figure_3b <- data %>% 
   select(starts_with("rude"), height_cat) %>% 
   pivot_longer(cols = starts_with("rude"), 
@@ -126,7 +126,7 @@ figure_3b <- figure_3b %>%
                 talk = "Talk to your neighbor",
                 unsold = "Move to an unsold seat",
                 switch_family = "Ask to switch seats \nto be closer to family"),
-         type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight")) %>% 
+         type_cat = c(NA, NA, "recline", NA, NA, NA, "move", NA, "walk")) %>% 
   filter(height_cat != "")
 
 figure_3b$height_cat <- factor(figure_3b$height_cat, 
@@ -136,15 +136,18 @@ figure_3b$height_cat <- factor(figure_3b$height_cat,
                                      "5'11 to 6'2",
                                      "> 6'2"))
 
+```
 
+
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 11, fig.width=11,  preview=TRUE}
 figure_3b %>% 
   ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
-  geom_col(fill = "gray60", alpha = .8)+
+  geom_col(fill = "gray75", alpha = .8)+
   geom_col(aes(fill = type_cat), alpha = .8) +
-  labs(x = "Percent of individuals that say it's rude to do action",
+  labs(x = "Percent judging the action as rude",
        y = NULL,
-       title = "Does height affect which behaviors people find rude?")+
-  theme_minimal(base_size = 15)+
+       title = "Do tall people think it's rude to recline your seat?")+
+  theme_minimal(base_size = 18)+
   scale_x_continuous(labels = scales::percent,
                      limits = c(0,1))+
   colorblindr::scale_fill_OkabeIto()+ 
@@ -155,118 +158,40 @@ figure_3b %>%
             hjust = -.2)+
   facet_wrap(~height_cat)
 
+
 ```
 
 
+In this draft, I added all of the judgments so that you can see if tall people differed on other judgments that might be relevant (e.g., tall people might need to wake their neighbor more often to walk around because they are more uncomfortable in their seats). I highlighted  judgments that I thought were relevant so that the viewer focuses in on them. In my last plot, I animated it with `gganimate` so that you can see the same information without having to look at several different graphs.
+
+# Final draft
 
 
-# Draft 4 
-```{r}
-# ranked_by_height <- figure_3b %>%  
-#   select(type, perc, height_cat, type_cat) %>%  
-#   group_by(height_cat) %>%  
-#   arrange(height_cat, -perc) %>%  
-#   mutate(rank = 1:n()) %>%  
-#   filter(rank <= 10)
-# 
-# plot <- ranked_by_height %>% 
-#   ggplot(aes(xmin =0,
-#              xmax = perc,
-#              ymin = rank - .45,
-#              ymax = rank + .45,
-#              y = rank)) +
-#   geom_rect(fill = "gray60", alpha = .8)+
-#   geom_rect(aes(fill = type_cat)) +
-#   colorblindr::scale_fill_OkabeIto()+ 
-#   facet_wrap(~height_cat) +
-#   scale_x_continuous(limits = c(-1, 1),  
-#     breaks = c(0, .25, .5, .75, 1)) +  
-#   geom_text(col = "gray13",
-#             hjust = "right",
-#             aes(label = type),
-#             x = 0) +
-#   scale_y_reverse() #+
-#   labs(x = "Percent of individuals that say it's rude to do action",
-#        y = NULL,
-#        title = "Airplane etiquette judgments for essential and nonessential behaviors",
-#        subtitle = "How rude is to...")+
-#   theme_minimal()+
-#   scale_x_continuous(labels = scales::percent,
-#                      limits = c(0,1))+
-#   theme(legend.position = "none",
-#         plot.title.position = "plot")+
-#   geom_text(x = figure_3b$perc, y = figure_3b$type, 
-#             label = paste0(round(figure_3b$perc*100), "%"),
-#             hjust = -.2)
-#   
-#   plot +  
-#   gganimate::transition_time(height_cat)
+```{r, echo = TRUE}
+a <- figure_3b %>% mutate(type_cat = c("other", "other", "recline", "other", "other", "other", "move", "other", "walk")) %>% 
+  ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_col(aes(fill = type_cat))+
+  labs(x = "Percent judging the action as rude",
+       y = NULL,
+       title = "Do tall people think it's rude to recline your seat?")+
+  theme_minimal(base_size = 15)+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0,1))+
+  scale_fill_manual(values = c("#E69F00", "gray75", "#56B4E9", "#009E73"))+   
+  theme(legend.position = "none",
+        plot.title.position = "plot")+
+  geom_text(x = figure_3b$perc, y = figure_3b$type, 
+            label = paste0(round(figure_3b$perc*100), "%"),
+            hjust = -.2)+
+  gganimate::transition_states(height_cat, transition_length = 5,
+                               state_length = 10) +
+  labs(subtitle = 'Height: {closest_state} inches')
+
 ```
-
 
 ```{r}
-
-# 
-# 
-# figure_3b <- data %>% 
-#   select(starts_with("rude"), height_inches) %>% 
-#   filter(height_inches != "") %>% 
-#   pivot_longer(cols = starts_with("rude"), 
-#                values_to = "judgment", 
-#                names_prefix = "rude_", 
-#                names_to = "type") %>%
-#   mutate(judgment = recode(judgment, "No, not rude at all" = "no",
-#          "Yes, somewhat rude" = "yes",
-#          "Yes, very rude" = "yes")) %>% 
-#   filter(judgment != "") %>% 
-#   group_by(judgment, height_inches) %>% 
-#   count(type) %>% 
-#   pivot_wider(names_from = judgment,
-#               values_from = n) %>% 
-#   mutate(total = no + yes,
-#          perc_yes = yes/total,
-#          perc_no = no/total) %>% 
-#   pivot_longer(cols = "perc_yes",
-#                values_to = "percent",
-#                names_prefix = "perc_",
-#                names_to = "judgment") %>% 
-#   select(-c(no, yes)) %>% 
-#   filter(judgment == "yes")
-# 
-# figure_3b <- figure_3b %>% 
-#   mutate(type = recode(type, child = "Bring an unruly child",
-#                 wake_walk = "Wake neighbor \nto walk around",
-#                 recline = "Recline your seat",
-#                 wake_bathroom = "Wake neighbor \nto go to the bathroom",
-#                 baby = "Bring a baby",
-#                 switch_friends = "Ask to switch seats \nto be closer to friends",
-#                 talk = "Talk to your neighbor",
-#                 unsold = "Move to an unsold seat",
-#                 switch_family = "Ask to switch seats \nto be closer to family"),
-#          type_cat = c(NA, NA, "highlight", NA, NA, NA, "highlight", NA, "highlight"))
-# 
-# a <- figure_3b %>% 
-#   ggplot(aes(x = percent, y = fct_reorder(type, percent))) +
-#   geom_col(fill = "gray60", alpha = .8)+
-#   geom_col(aes(fill = type_cat), alpha = .8) +
-#   labs(x = "Percent of individuals that say it's rude to do action",
-#        y = NULL,
-#        title = "Airplane etiquette judgments for essential and nonessential behaviors",
-#        subtitle = "How rude is to...")+
-#   theme_minimal()+
-#   scale_x_continuous(labels = scales::percent,
-#                      limits = c(0,.85))+
-#   colorblindr::scale_fill_OkabeIto()+ 
-#   theme(legend.position = "none",
-#         plot.title.position = "plot")+
-#   geom_text(x = figure_3b$percent, y = figure_3b$type, 
-#             label = paste0(round(figure_3b$percent*100), "%"),
-#             hjust = -.2)+
-#   facet_wrap(~height_inches)
-# 
-# a + transition_time(height_inches)+
-#   labs(title = 'Height: {frame_time}')
+#gganimate::anim_save("datavis_3.gif", a)
 
 ```
 
-
+![](datavis_3.gif)
