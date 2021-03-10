@@ -11,7 +11,7 @@ editor_options:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, dev = "ragg_png")
 
 library(rio)
 library(here)
@@ -156,8 +156,7 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), color = region, label = plane_
        color = "US Region",
        title = "Rudest airplane behaviors by US region")+
   scale_x_continuous(labels = scales::percent,
-                     limits = c(0, 1)) 
-
+                     limits = c(0, 1))
 ```
 
 I made the points into airplanes with the `emojifont` package. Even though this looks cleaner, we are missing potentially valuable information about subdivisions by collapsing across regions. Additionally, it's possible that we will be able to learn interesting information about how divisions that are close to each other (but maybe not in the same region) may be related to each other in judgments. For these reasons, I used `facet_wrap()` to plot judgments onto US maps.
@@ -214,13 +213,12 @@ new_us <- left_join(us, figure_2a)
 
 ```{r,  echo = TRUE, layout = "l-body-outset", fig.height= 9, fig.width=10, preview=TRUE}
 
-
 ggplot(new_us) +
   geom_sf(aes(fill = perc), color = "black") +
   facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
   theme_void(base_size = 15)+
   labs(title = "Rudest airplane behaviors by US division",
-       fill = "Percent who \nthinks act \nis rude") +
+       fill = "Percent judging\naction as rude") +
   scale_fill_gradient2(low = "#E69F00",
                        mid = "white",
                       high = "#56B4E9",
@@ -230,7 +228,10 @@ ggplot(new_us) +
                       labels = scales::percent) + 
   theme(legend.position = c(.75, -.05), 
         legend.direction = "horizontal",
-        plot.margin = margin(b = 1, unit = "cm"))
+        plot.margin = margin(b = 1, unit = "cm")) + theme(plot.title = element_text(size = 35),
+      strip.text.x = element_text(size = 20, face = "bold"),
+      text = element_text(family = "Times New Roman", size = 30),
+      legend.title=element_text(size=20))
 
 ```
 
@@ -246,8 +247,8 @@ a <- new_us %>%
   ggplot() +
   geom_sf(aes(fill = perc), color = "black") +
   facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
-  theme_void()+
-  labs(title = "Rudest airplane behaviors by US division",
+  theme_void(base_size = 10)+
+  labs(title = "Rudest airplane behaviors",
        fill = "Percent who \nthinks act \nis rude") +
   scale_fill_gradient2(low = "#E69F00",
                        mid = "white",
@@ -256,7 +257,6 @@ a <- new_us %>%
                       limits = c(0, 1),
                       breaks = c(0, .5, 1),
                       labels = scales::percent)
-
 library(plotly)
 
 ggplotly(a, tooltip = c("location", "perc"))

@@ -9,7 +9,7 @@ editor_options:
 
 # Data source
 
-The data for this project were collected online by [FiveThiryEight](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude, such as reclining your seat or waking a neighbor to walk around. The researchers also inquired whether or not respondents had done these behaviors themselves. For all visualizations, people who responded that they had never traveled by plane before were excluded.
+The data for this project were collected online by [FiveThiryEight](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/) in late August, 2014. The researchers asked the survey takers whether or not they thought certain airplane behaviors were rude. **The behaviors included are moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child.** The researchers also inquired whether or not respondents had done these behaviors themselves. For all visualizations, people who responded that they had never traveled by plane before were excluded.
 
 ```{r setup, include=FALSE}
 library(rio)

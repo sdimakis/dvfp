@@ -1,7 +1,7 @@
 ---
 title: "What's the rudest airplane behavior?"
 description: |
-  This visualization plots the extent to which people consider airplane behaviors rude. The behaviors included are moving to an unsold seat, talking to a neighbor, reclining your seat, asking someone to switch seats to sit by friends, asking someone to switch seats to sit by family, waking up a neighbor to go to the bathroom, waking up a neighbor to walk around, bringing a baby, and bringing an unruly child. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
+  This visualization plots the extent to which people consider airplane behaviors rude. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
 output:
   distill::distill_article:
     self_contained: false
@@ -88,7 +88,7 @@ figure_1 <- data %>%
 
 ```
 
-```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 4.5, fig.width=8}
 figure_1 %>%
 ggplot(aes(x = perc, y = fct_reorder(type, perc), fill = judgment)) +
   geom_bar(stat="identity",position="identity", width = .8) +
@@ -155,7 +155,7 @@ somewhat_rude <- figure_1_yes %>% filter(judgment  == "Somewhat rude")
 
 ```
 
-```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8}
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 4.5, fig.width=8}
 
 ggplot() +
   geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
@@ -182,7 +182,7 @@ In order to have three judgment categories (including somewhat rude), I had to u
 
 # Final draft
 
-```{r, echo = TRUE, layout = "l-body-outset", fig.height= 5, fig.width=8, preview=TRUE}
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 4.5, fig.width=8, preview=TRUE}
 
 ggplot() +
   geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
