@@ -86,31 +86,31 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>data vis 4</title>
+  <title>Are men more judgmental than women?</title>
   
-  <meta property="description" itemprop="description" content="A short description of the post."/>
+  <meta property="description" itemprop="description" content="This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations."/>
   
   
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2021-03-09"/>
-  <meta property="article:created" itemprop="dateCreated" content="2021-03-09"/>
+  <meta property="article:published" itemprop="datePublished" content="2021-03-08"/>
+  <meta property="article:created" itemprop="dateCreated" content="2021-03-08"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="data vis 4"/>
+  <meta property="og:title" content="Are men more judgmental than women?"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="A short description of the post."/>
+  <meta property="og:description" content="This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations."/>
   <meta property="og:locale" content="en_US"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="data vis 4"/>
-  <meta property="twitter:description" content="A short description of the post."/>
+  <meta property="twitter:title" content="Are men more judgmental than women?"/>
+  <meta property="twitter:description" content="This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","draft","output","date"]}},"value":[{"type":"character","attributes":{},"value":["data vis 4"]},{"type":"character","attributes":{},"value":["A short description of the post.\n"]},{"type":"logical","attributes":{},"value":[true]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["03-09-2021"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Are men more judgmental than women?"]},{"type":"character","attributes":{},"value":["This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations.\n"]},{"type":"character","attributes":{},"value":["03-8-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["chunk_output_type"]}},"value":[{"type":"character","attributes":{},"value":["console"]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1419,7 +1419,7 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"data vis 4","description":"A short description of the post.","authors":[],"publishedDate":"2021-03-09T00:00:00.000-08:00"}
+{"title":"Are men more judgmental than women?","description":"This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations.","authors":[],"publishedDate":"2021-03-08T00:00:00.000-08:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1429,58 +1429,125 @@ code span.wa { color: #545454; font-weight: bold; font-style: italic; } /* Warni
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>data vis 4</h1>
+<h1>Are men more judgmental than women?</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>A short description of the post.</p></p>
+<p><p>This visualization explores whether or not there are gender differences in airplane judgments. There appears to be a small difference in childcare judgments, such that women consider it less rude to bring a baby or unruly child on a plane than men do. Gender differences of judgments seemingly differed across generations.</p></p>
 </div>
 
 
 <div class="d-article">
-<h3 id="final">Final</h3>
+<h1 id="draft-1">Draft 1</h1>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-1-1.png" width="1344" /></p>
+
 </div>
-<h3 id="draft-1">Draft 1</h3>
-<div class="layout-chunk" data-layout="l-body">
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre><code><span class='va'>figure_4</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>perc</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>type</span>, <span class='va'>perc</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='va'>gender</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>stat<span class='op'>=</span><span class='st'>"identity"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>colorblindr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/colorblindr/man/scale_OkabeIto.html'>scale_fill_OkabeIto</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Gender"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>gender</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Percent judging the action as rude"</span>,
+       y <span class='op'>=</span> <span class='cn'>NULL</span>,
+       title <span class='op'>=</span> <span class='st'>"Are men more judgmental than women?"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"none"</span>,
+        axis.text.x<span class='op'>=</span><span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>geom_text</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>figure_4</span><span class='op'>$</span><span class='va'>perc</span>, y <span class='op'>=</span> <span class='va'>figure_4</span><span class='op'>$</span><span class='va'>type</span>, 
+            label <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>figure_4</span><span class='op'>$</span><span class='va'>perc</span><span class='op'>*</span><span class='fl'>100</span><span class='op'>)</span>, <span class='st'>"%"</span><span class='op'>)</span>,
+            hjust <span class='op'>=</span> <span class='op'>-</span><span class='fl'>.2</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="data-vis-4_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
-<blockquote>
-<p>Here I am plotting airplane etiquette judgments, colored by how essential the action is. For example, waking someone up to walk around is less essential than waking up someone to go to the bathroom, so it should be judged as more rude. Instead of breaking it up by category like I’m doing here, I’m going to plot them all in order and show each category with a different color.</p>
-</blockquote>
-<h3 id="draft-2">Draft 2</h3>
-<div class="layout-chunk" data-layout="l-body">
+<p>In the first draft, I am plotting the percent who judge each action as rude and facet wrapping by gender. The numbers make it easy to compare female and male judgments. However, for my next draft, I want to be able to make the comparison more easily.</p>
+<h1 id="draft-2">Draft 2</h1>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre><code><span class='va'>figure_4</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>perc</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>type</span>, <span class='va'>perc</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='va'>gender</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>stat<span class='op'>=</span><span class='st'>"identity"</span>, position<span class='op'>=</span><span class='fu'>position_dodge</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>colorblindr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/colorblindr/man/scale_OkabeIto.html'>scale_fill_OkabeIto</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Gender"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>,
+                     limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>,
+       y <span class='op'>=</span> <span class='cn'>NULL</span>,
+       title <span class='op'>=</span> <span class='st'>"Are men more judgmental than women?"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fl'>0.5</span>, color <span class='op'>=</span> <span class='st'>"gray40"</span>, linetype <span class='op'>=</span> <span class='st'>"dashed"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="data-vis-4_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
 </div>
-<blockquote>
-<p>I like this plot a lot, but I want to put it in context of all the judgments (not just these six). I will first plot all of the judgments, then use color to highlight the ones shown here.</p>
-</blockquote>
-<h3 id="draft-3">Draft 3</h3>
-<div class="layout-chunk" data-layout="l-body">
+<p>In this draft, I used the <code>position_dodge()</code> argument to show the bars right next to each other. I also added a 50% vertical line so that you can see easily which actions are judged by rude by the majority of people. For the next draft, I am going to show this relation with a dumbbell plot/ connected dotplot. This will get rid of the unnecessary part of the bar that is not informative.</p>
+<h1 id="draft-3">Draft 3</h1>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre><code><span class='va'>figure_4</span> <span class='op'>%&gt;%</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>perc</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>type</span>, <span class='va'>perc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>3</span>, color <span class='op'>=</span> <span class='st'>"gray60"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>gender</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_minimal</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Percent judging the action as rude"</span>,
+       y <span class='op'>=</span> <span class='cn'>NULL</span>,
+       title <span class='op'>=</span> <span class='st'>"Are men more judgmental than women?"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>legend.direction <span class='op'>=</span> <span class='st'>"horizontal"</span>,
+        plot.title.position <span class='op'>=</span> <span class='st'>"plot"</span>,
+        legend.position <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>,
+                     limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>colorblindr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/colorblindr/man/scale_OkabeIto.html'>scale_color_OkabeIto</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Gender"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fl'>0.5</span>, color <span class='op'>=</span> <span class='st'>"gray40"</span>, linetype <span class='op'>=</span> <span class='st'>"dashed"</span><span class='op'>)</span>
+</code></pre>
+</div>
 <p><img src="data-vis-4_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
-<blockquote>
-<p>I think this is good as it’s going to get for a bar plot. For my final plot, I want it to be clear that I’m directly comparing essential to nonessential behaviors. To do this, I want them to be plotted on the same line. I’m going to use a dumbbell/ lollipop plot to do this.</p>
-</blockquote>
-<p>#income</p>
+<p>In my final draft, I wanted to color the bars so that it is really easy to see if one mean was greater than the other. Next, I wanted to facet wrap by age cohort because I noticed an interesting pattern in that women were less judgmental about bringing babies and children on planes. Since attitudes about gender roles are generational, I thought it would be interesting to see if this relationship occurred across different generations. I also created a theme and added a new font to the visualization.</p>
+<h1 id="final-draft">Final draft</h1>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+
 </div>
-<p>#education</p>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+
 </div>
-<p>#gender</p>
-<div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-7-1.png" width="624" /></p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre><code><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/yixuan/showtext'>showtext</a></span><span class='op'>)</span>
+<span class='fu'>font_add_google</span><span class='op'>(</span><span class='st'>'Caveat Brush'</span>, <span class='st'>"cb"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/showtext/man/showtext_auto.html'>showtext_auto</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>figure_4b</span> <span class='op'>%&gt;%</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>perc</span>, y <span class='op'>=</span> <span class='fu'>fct_reorder</span><span class='op'>(</span><span class='va'>type</span>, <span class='va'>perc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>geom_vline</span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.25</span>,<span class='fl'>.5</span>, <span class='fl'>.75</span> <span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"gray75"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>greater_gender</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_color_manual</span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#ffd780"</span>, <span class='st'>"#8eccf0"</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"Higher judgment"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>ggnewscale</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ggnewscale/man/new_scale.html'>new_scale_color</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>color <span class='op'>=</span> <span class='va'>gender</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>colorblindr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/colorblindr/man/scale_OkabeIto.html'>scale_color_OkabeIto</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Gender"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Percent judging the action as rude"</span>,
+       y <span class='op'>=</span> <span class='cn'>NULL</span>,
+       title <span class='op'>=</span> <span class='st'>"Are men more judgmental than women?"</span>,
+       caption <span class='op'>=</span> <span class='st'>"Data source: FiveThirtyEight"</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>theme_classic</span><span class='op'>(</span>base_size<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>legend.direction <span class='op'>=</span> <span class='st'>"horizontal"</span>,
+        plot.title.position <span class='op'>=</span> <span class='st'>"plot"</span>,
+        legend.position <span class='op'>=</span> <span class='st'>"top"</span>,
+        strip.text.x <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>18</span>, family <span class='op'>=</span> <span class='st'>"cb"</span><span class='op'>)</span>,
+        strip.background <span class='op'>=</span> <span class='fu'>element_rect</span><span class='op'>(</span>colour <span class='op'>=</span> <span class='st'>"black"</span>, fill <span class='op'>=</span> <span class='st'>"#8eccf0"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
+        panel.border <span class='op'>=</span> <span class='fu'>element_rect</span><span class='op'>(</span>linetype <span class='op'>=</span> <span class='st'>"solid"</span>, size <span class='op'>=</span> <span class='fl'>1</span>, fill <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,
+        panel.background <span class='op'>=</span> <span class='fu'>element_rect</span><span class='op'>(</span>fill <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span>,
+        plot.title <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='st'>"bold"</span>, size <span class='op'>=</span> <span class='fl'>40</span>, family <span class='op'>=</span> <span class='st'>"cb"</span><span class='op'>)</span>,
+        legend.key<span class='op'>=</span><span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.ticks <span class='op'>=</span> <span class='fu'>element_blank</span><span class='op'>(</span><span class='op'>)</span>,
+        axis.text.y <span class='op'>=</span> <span class='fu'>element_text</span><span class='op'>(</span>face <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bold"</span>, <span class='st'>"plain"</span>, <span class='st'>"bold"</span>, <span class='st'>"plain"</span>, <span class='st'>'bold'</span>, <span class='st'>'plain'</span>, <span class='st'>'bold'</span>, <span class='st'>'plain'</span>, <span class='st'>'bold'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>,
+                     limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,
+                     expand <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,
+                     breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.25</span>, <span class='fl'>.5</span>, <span class='fl'>.75</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>age</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</code></pre>
 </div>
-<p>#have children</p>
-<div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
-</div>
-<p>travel frequently</p>
-<div class="layout-chunk" data-layout="l-body">
-<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+<p><img src="data-vis-4_files/figure-html5/unnamed-chunk-7-1.png" width="528" data-distill-preview=1 /></p>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

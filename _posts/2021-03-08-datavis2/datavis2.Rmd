@@ -2,6 +2,7 @@
 title: "Do airplane judgments differ across US regions?"
 description: |
   For the second visualization, I wanted to see if there were any meaningful differences in rudeness judgments across different geographical regions of the US. Although there was typically regional variability within a particular judgment, no regions emerged as giving consistently harsh or lenient judgments across all behaviors. 
+date: 03-10-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -74,7 +75,9 @@ ggplot(aes(x = perc, y = fct_reorder(type, perc), color = location)) +
   colorblindr::scale_color_OkabeIto(name = "location") +
   labs(x = "Percent judging the action as rude",
        y = NULL,
-       title = "Rudest airplane behaviors by US division")
+       title = "Rudest airplane behaviors by US division")+
+  scale_x_continuous(labels = scales::percent,
+                     limits = c(0, 1))
 
 
 ```
@@ -218,7 +221,8 @@ ggplot(new_us) +
   facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
   theme_void(base_size = 15)+
   labs(title = "Rudest airplane behaviors by US division",
-       fill = "Percent judging\naction as rude") +
+       fill = "Percent judging\naction as rude",
+       caption = "Data source: FiveThirtyEight") +
   scale_fill_gradient2(low = "#E69F00",
                        mid = "white",
                       high = "#56B4E9",
@@ -226,7 +230,7 @@ ggplot(new_us) +
                       limits = c(0, 1),
                       breaks = c(0, .5, 1),
                       labels = scales::percent) + 
-  theme(legend.position = c(.75, -.05), 
+  theme(legend.position = c(.15, -.05), 
         legend.direction = "horizontal",
         plot.margin = margin(b = 1, unit = "cm")) + theme(plot.title = element_text(size = 35),
       strip.text.x = element_text(size = 20, face = "bold"),
@@ -249,7 +253,8 @@ a <- new_us %>%
   facet_wrap(~fct_reorder(type,perc, .desc = TRUE))+
   theme_void(base_size = 10)+
   labs(title = "Rudest airplane behaviors",
-       fill = "Percent who \nthinks act \nis rude") +
+       fill = "Percent who \nthinks act \nis rude",
+       caption = "Data source: FiveThirtyEight") +
   scale_fill_gradient2(low = "#E69F00",
                        mid = "white",
                       high = "#56B4E9",

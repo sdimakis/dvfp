@@ -1,8 +1,8 @@
 ---
 title: "Do tall people think reclining your seat is rude?"
 description: |
-  I created this final visualization to see if people find an action more or less rude when it directly affects them. For example, very tall people may be made extremely uncomfortable when someone reclines their seat. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all. Some of the extreme categories have small sample sizes so be cautious drawing any conclusions. 
-  
+  This visualization explores if people find an action more or less rude when it directly affects them. For example, very tall people may be made extremely uncomfortable when someone reclines their seat. There looks to be a small (and likely insignificant) effect, where respondents who said that the behavior was very rude were slightly taller than those who said it was somewhat rude or not rude at all. Some of the extreme categories have small sample sizes so be cautious drawing any conclusions. 
+date: 03-9-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -139,23 +139,31 @@ figure_3b$height_cat <- factor(figure_3b$height_cat,
 ```
 
 
-```{r, echo = TRUE, layout = "l-body-outset", fig.height= 11, fig.width=11,  preview=TRUE}
+```{r, echo = TRUE, layout = "l-body-outset", fig.height= 9, fig.width=11,  preview=TRUE}
 figure_3b %>% 
   ggplot(aes(x = perc, y = fct_reorder(type, perc))) +
+  geom_vline(xintercept = c(.25,.5, .75 ), color = "gray75")+
   geom_col(fill = "gray75", alpha = .8)+
   geom_col(aes(fill = type_cat), alpha = .8) +
   labs(x = "Percent judging the action as rude",
        y = NULL,
-       title = "Do tall people think it's rude to recline your seat?")+
-  theme_minimal(base_size = 18)+
+       title = "Do tall people think it's rude to recline your seat?",
+        caption = "Data source: FiveThirtyEight")+
+  theme_classic(base_size = 15)+
   scale_x_continuous(labels = scales::percent,
-                     limits = c(0,1))+
+                     limits = c(0,1),
+                     expand = c(0,0),
+                     breaks = c(.25, .5, .75))+
   colorblindr::scale_fill_OkabeIto()+ 
   theme(legend.position = "none",
-        plot.title.position = "plot")+
-  geom_text(x = figure_3b$perc, y = figure_3b$type, 
-            label = paste0(round(figure_3b$perc*100), "%"),
-            hjust = -.2)+
+        plot.title.position = "plot",
+        strip.text.x = element_text(face = "bold", size = 18),
+        plot.title = element_text(face = "bold", size = 20),
+        strip.background = element_rect(colour = "black", fill = "white", size = 1),
+        panel.border = element_rect(linetype = "solid", size = 1, fill = NA),
+        panel.background = element_rect(fill = "white"),
+        axis.ticks = element_blank(),
+        axis.text.y = element_text(face = c("bold", "plain", "bold", "plain", 'bold', 'plain', 'bold', 'plain', 'bold')))+
   facet_wrap(~height_cat)
 
 

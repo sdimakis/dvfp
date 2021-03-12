@@ -2,9 +2,12 @@
 title: "What's the rudest airplane behavior?"
 description: |
   This visualization plots the extent to which people consider airplane behaviors rude. Most people considered it rude to bring an unruly child and to wake up a neighbor to walk around, but other behaviors were considered not rude by the majority of the respondents. 
+date: 03-11-2021
 output:
   distill::distill_article:
     self_contained: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -185,29 +188,42 @@ In order to have three judgment categories (including somewhat rude), I had to u
 ```{r, echo = TRUE, layout = "l-body-outset", fig.height= 4.5, fig.width=8, preview=TRUE}
 
 ggplot() +
-  geom_bar(data = figure_1_no, aes(x = perc, y = fct_reorder(type, perc), fill = judgment), 
-           stat="identity",position="stack", width = .8, alpha = .8) +
-  geom_bar(data = figure_1_yes, aes(x = perc, y = fct_reorder(type,perc), fill = forcats::fct_rev(judgment)), 
-           stat = "identity", position = "stack", width = .8, alpha = .8) +
+  geom_bar(data = figure_1_no, 
+           aes(x = perc, y = fct_reorder(type, perc), 
+               fill = judgment), 
+           stat="identity", position="stack", 
+           width = .8, alpha = .8) +
+  geom_bar(data = figure_1_yes, 
+           aes(x = perc, y = fct_reorder(type,perc), 
+               fill = forcats::fct_rev(judgment)), 
+           stat = "identity", position = "stack", 
+           width = .8, alpha = .8) +
   geom_vline(xintercept = 0, color = "black", linetype = "dashed")+
-  geom_text(data = figure_1_no, aes(x=perc/2, y = type, label = paste0(abs(round(perc*100)),"%")),
+  geom_text(data = figure_1_no, 
+            aes(x=perc/2, y = type, 
+                label = paste0(abs(round(perc*100)),"%")),
             size = 4) +
-  geom_text(data = very_rude, aes(x = ifelse(perc > .05, 
-                                         somewhat_rude$perc + perc/2 , somewhat_rude$perc + perc),
-                                  y = type, label = paste0(round(perc*100), "%")),
+  geom_text(data = very_rude, 
+            aes(x = ifelse(perc > .05,
+                           somewhat_rude$perc + perc/2,
+                           somewhat_rude$perc + perc),
+                y = type, label = paste0(round(perc*100), "%")),
             size = 4, hjust = ifelse(very_rude$perc > .05, .4, -.2)) +
-  geom_text(data = somewhat_rude, aes(x=perc/2, y = type, label = paste0(round(perc*100), "%")),
+  geom_text(data = somewhat_rude, 
+            aes(x=perc/2, y = type,label = paste0(round(perc*100), "%")),
             size = 4) +
   colorblindr::scale_fill_OkabeIto(name = "")+
-  scale_x_continuous(limits = c(-1, 1),
+  scale_x_continuous(limits = c(-.85, .85),
                      labels = NULL)+
   theme_minimal(base_size = 12) +
   labs(x = NULL,
        y = NULL,
        title = "What's the rudest airplane behavior?") + 
+  theme_minimal()+
   theme(legend.position = "bottom", 
          legend.direction = "horizontal",
-        plot.title.position = "plot")
+        plot.title.position = "plot",
+        axis.text.y = element_text(face = c("bold", "plain", "bold", "plain", 'bold', 'plain', 'bold', 'plain', 'bold')))
 
 
 ```
